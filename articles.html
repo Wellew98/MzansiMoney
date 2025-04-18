@@ -8,6 +8,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- React CDNs -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -17,53 +21,65 @@
         }
     </style>
 </head>
-<body class="bg-amber-50 text-gray-800">
-    <div class="min-h-screen">
-        <!-- Header -->
-        <header class="sticky top-0 z-50 bg-amber-50 shadow-md">
-            <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-                <div class="text-2xl font-bold text-emerald-600">
-                    <a href="file:///C:/Users/tenders\Desktop/mzansimoney/index.html">MzansiMoney</a>
-                </div>
-                <div class="space-x-6 flex items-center">
-                    <a href="file:///C:/Users/tenders\Desktop/mzansimoney/index.html#home" class="text-gray-700 hover:text-emerald-600">Home</a>
-                    <a href="file:///C:/Users/tenders\Desktop/mzansimoney/index.html#tools" class="text-gray-700 hover:text-emerald-600">Tools</a>
-                    <a href="file:///C:/Users/tenders\Desktop/mzansimoney/tools/income-tax.html" class="text-gray-700 hover:text-emerald-600">Tax Calculator</a>
-                    <a href="file:///C:/Users/tenders\Desktop/mzansimoney/tools/budget-planner.html" class="text-gray-700 hover:text-emerald-600">Budget Planner</a>
-                    <a href="file:///C:/Users/tenders\Desktop/mzansimoney/tools/vat-calculator.html" class="text-gray-700 hover:text-emerald-600">VAT Calculator</a>
-                    <a href="file:///C:/Users/tenders\Desktop/mzansimoney/articles.html" class="text-gray-700 hover:text-emerald-600">Articles</a>
-                </div>
-            </nav>
-        </header>
+<body class="bg-amber-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+    <div id="root"></div>
 
-        <!-- Main Content -->
-        <div class="container mx-auto px-4 py-16">
-            <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Articles</h1>
-            <div class="max-w-3xl mx-auto">
-                <article class="bg-white p-6 rounded-lg shadow-md mb-8">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">5 Simple Ways to Save Money in South Africa</h2>
-                    <p class="text-gray-600 mb-4">Saving money can be tough, but here are some practical tips for South Africans:</p>
-                    <ul class="list-disc pl-5 text-gray-600 mb-4">
-                        <li>Shop smart: Buy in bulk at markets like Checkers or Shoprite for staples like rice and mealie meal.</li>
-                        <li>Cut transport costs: Use public transport or carpool instead of driving everywhere.</li>
-                        <li>Save on electricity: Switch to LED bulbs and use a geyser timer to reduce your Eskom bill.</li>
-                        <li>Start a stokvel: Join a community savings group to pool money for big expenses.</li>
-                        <li>Grow your own food: Plant veggies like spinach or tomatoes in your backyard to save on groceries.</li>
-                    </ul>
-                    <p class="text-gray-600">Small changes can add up to big savings over time!</p>
-                </article>
-                <article class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Understanding VAT in South Africa</h2>
-                    <p class="text-gray-600 mb-4">VAT, or Value Added Tax, is a 15% tax added to most goods and services in South Africa. Hereís what you need to know:</p>
-                    <ul class="list-disc pl-5 text-gray-600 mb-4">
-                        <li>Itís charged on everything from groceries to clothing, but essentials like bread and milk are often exempt.</li>
-                        <li>Businesses with an annual turnover above R1 million must register for VAT with SARS.</li>
-                        <li>You can claim VAT back on business expenses if youíre registeredójust keep your receipts!</li>
-                    </ul>
-                    <p class="text-gray-600">Use our VAT Calculator to see how much VAT youíre paying or to exclude it from your totals.</p>
-                </article>
-            </div>
-        </div>
-    </div>
+    <script type="text/babel">
+        var _React = React;
+        var useState = _React.useState;
+        var useEffect = _React.useEffect;
+
+        function Articles() {
+            var darkModeState = useState(false);
+            var darkMode = darkModeState[0];
+            var setDarkMode = darkModeState[1];
+
+            useEffect(function() {
+                if (darkMode) {
+                    document.body.classList.add('dark');
+                } else {
+                    document.body.classList.remove('dark');
+                }
+            }, [darkMode]);
+
+            return (
+                <div className="min-h-screen">
+                    {/* Header */}
+                    <header className="sticky top-0 z-50 bg-amber-50 dark:bg-gray-900 shadow-md">
+                        <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
+                            <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                                <a href="/index.html">MzansiMoney</a>
+                            </div>
+                            <div className="space-x-6 flex items-center">
+                                <a href="/index.html#home" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Home</a>
+                                <a href="/income-tax.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Tax Calculator</a>
+                                <a href="/budget-planner.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Budget Planner</a>
+                                <a href="/vat-calculator.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">VAT Calculator</a>
+                                <a href="/articles.html" className="text-gray-7 dark:text-gray-200 hover:text-emerald-600">Articles</a>
+                                <button
+                                    onClick={function() { setDarkMode(!darkMode); }}
+                                    className="p-2 rounded-full bg-gray-200 dark:bg-gray-700"
+                                    aria-label="Toggle dark mode"
+                                >
+                                    {darkMode ? '‚òÄÔ∏è' : 'üåô'}
+                                </button>
+                            </div>
+                        </nav>
+                    </header>
+
+                    {/* Main Content */}
+                    <div className="container mx-auto px-4 py-16">
+                        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-8 text-center">Articles</h1>
+                        <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                            <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Coming Soon</h2>
+                            <p className="text-gray-700 dark:text-gray-200">We're working on adding insightful financial articles to help you make informed decisions. Check back soon!</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<Articles />, document.getElementById('root'));
+    </script>
 </body>
 </html>
