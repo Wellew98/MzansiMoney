@@ -85,9 +85,9 @@
             var budgetData = budgetDataState[0];
             var setBudgetData = budgetDataState[1];
 
-            var calculatedState = useState(null);
-            var calculated = calculatedState[0];
-            var setCalculated = calculatedState[1];
+            var showResultsState = useState(false);
+            var showResults = showResultsState[0];
+            var setShowResults = showResultsState[1];
 
             useEffect(function() {
                 if (darkMode) {
@@ -152,7 +152,7 @@
 
                 var gradient = gradientStops.length > 0 ? `conic-gradient(${gradientStops.join(', ')})` : 'conic-gradient(#E5E7EB 0deg 360deg)';
 
-                setCalculated({
+                setShowResults({
                     income: income,
                     expenses: expenses,
                     totalExpenses: totalExpenses,
@@ -192,133 +192,137 @@
                     <div className="container mx-auto px-4 py-16">
                         <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-8 text-center">Monthly Budget Planner</h1>
                         <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                            {/* Income Input */}
-                            <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Enter Your Budget Details</h2>
-                            <div className="mb-4">
-                                <label htmlFor="income" className="block text-gray-700 dark:text-gray-200 mb-2 tooltip" data-tooltip="Your total monthly income after tax deductions.">Monthly Income (ZAR)</label>
-                                <input
-                                    type="number"
-                                    id="income"
-                                    value={budgetData.income}
-                                    onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { income: e.target.value })); }}
-                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
-                                    placeholder="Enter monthly income"
-                                    aria-label="Monthly income in ZAR"
-                                />
-                            </div>
-
-                            {/* Expense Inputs */}
-                            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Monthly Expenses (ZAR)</h3>
-                            <div className="mb-4">
-                                <label htmlFor="rent" className="block text-gray-700 dark:text-gray-200 mb-2">Rent/Housing</label>
-                                <input
-                                    type="number"
-                                    id="rent"
-                                    value={budgetData.rent}
-                                    onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { rent: e.target.value })); }}
-                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
-                                    placeholder="Enter rent expenses"
-                                    aria-label="Rent expenses in ZAR"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label htmlFor="food" className="block text-gray-700 dark:text-gray-200 mb-2">Food/Groceries</label>
-                                <input
-                                    type="number"
-                                    id="food"
-                                    value={budgetData.food}
-                                    onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { food: e.target.value })); }}
-                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
-                                    placeholder="Enter food expenses"
-                                    aria-label="Food expenses in ZAR"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label htmlFor="transport" className="block text-gray-700 dark:text-gray-200 mb-2">Transport</label>
-                                <input
-                                    type="number"
-                                    id="transport"
-                                    value={budgetData.transport}
-                                    onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { transport: e.target.value })); }}
-                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
-                                    placeholder="Enter transport expenses"
-                                    aria-label="Transport expenses in ZAR"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label htmlFor="entertainment" className="block text-gray-700 dark:text-gray-200 mb-2">Entertainment</label>
-                                <input
-                                    type="number"
-                                    id="entertainment"
-                                    value={budgetData.entertainment}
-                                    onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { entertainment: e.target.value })); }}
-                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
-                                    placeholder="Enter entertainment expenses"
-                                    aria-label="Entertainment expenses in ZAR"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label htmlFor="savings" className="block text-gray-700 dark:text-gray-200 mb-2">Savings</label>
-                                <input
-                                    type="number"
-                                    id="savings"
-                                    value={budgetData.savings}
-                                    onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { savings: e.target.value })); }}
-                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
-                                    placeholder="Enter savings amount"
-                                    aria-label="Savings amount in ZAR"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label htmlFor="other" className="block text-gray-700 dark:text-gray-200 mb-2">Other Expenses</label>
-                                <input
-                                    type="number"
-                                    id="other"
-                                    value={budgetData.other}
-                                    onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { other: e.target.value })); }}
-                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
-                                    placeholder="Enter other expenses"
-                                    aria-label="Other expenses in ZAR"
-                                />
-                            </div>
-
-                            <button
-                                onClick={calculateBudget}
-                                className="w-full px-4 py-2 bg-emerald-600 text-white rounded"
-                                aria-label="Calculate budget"
-                            >
-                                Calculate Budget
-                            </button>
+                            {/* Budget Form */}
+                            {!showResults && (
+                                <div>
+                                    <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Plan Your Monthly Budget</h2>
+                                    {/* Income Input */}
+                                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Income</h3>
+                                    <div className="mb-4">
+                                        <label htmlFor="income" className="block text-gray-700 dark:text-gray-200 mb-2 tooltip" data-tooltip="Your total monthly income after tax deductions.">Monthly Income (ZAR)</label>
+                                        <input
+                                            type="number"
+                                            id="income"
+                                            value={budgetData.income}
+                                            onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { income: e.target.value })); }}
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
+                                            placeholder="Enter monthly income"
+                                            aria-label="Monthly income in ZAR"
+                                        />
+                                    </div>
+                                    {/* Expense Inputs */}
+                                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Expenses</h3>
+                                    <div className="mb-4">
+                                        <label htmlFor="rent" className="block text-gray-700 dark:text-gray-200 mb-2">Rent/Housing (ZAR)</label>
+                                        <input
+                                            type="number"
+                                            id="rent"
+                                            value={budgetData.rent}
+                                            onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { rent: e.target.value })); }}
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
+                                            placeholder="Enter rent expenses"
+                                            aria-label="Rent expenses in ZAR"
+                                        />
+                                    </div>
+                                    <div className="mb-4">
+                                        <label htmlFor="food" className="block text-gray-700 dark:text-gray-200 mb-2">Food/Groceries (ZAR)</label>
+                                        <input
+                                            type="number"
+                                            id="food"
+                                            value={budgetData.food}
+                                            onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { food: e.target.value })); }}
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
+                                            placeholder="Enter food expenses"
+                                            aria-label="Food expenses in ZAR"
+                                        />
+                                    </div>
+                                    <div className="mb-4">
+                                        <label htmlFor="transport" className="block text-gray-700 dark:text-gray-200 mb-2">Transport (ZAR)</label>
+                                        <input
+                                            type="number"
+                                            id="transport"
+                                            value={budgetData.transport}
+                                            onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { transport: e.target.value })); }}
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
+                                            placeholder="Enter transport expenses"
+                                            aria-label="Transport expenses in ZAR"
+                                        />
+                                    </div>
+                                    <div className="mb-4">
+                                        <label htmlFor="entertainment" className="block text-gray-700 dark:text-gray-200 mb-2">Entertainment (ZAR)</label>
+                                        <input
+                                            type="number"
+                                            id="entertainment"
+                                            value={budgetData.entertainment}
+                                            onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { entertainment: e.target.value })); }}
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
+                                            placeholder="Enter entertainment expenses"
+                                            aria-label="Entertainment expenses in ZAR"
+                                        />
+                                    </div>
+                                    <div className="mb-4">
+                                        <label htmlFor="savings" className="block text-gray-700 dark:text-gray-200 mb-2">Savings (ZAR)</label>
+                                        <input
+                                            type="number"
+                                            id="savings"
+                                            value={budgetData.savings}
+                                            onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { savings: e.target.value })); }}
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
+                                            placeholder="Enter savings amount"
+                                            aria-label="Savings amount in ZAR"
+                                        />
+                                    </div>
+                                    <div className="mb-4">
+                                        <label htmlFor="other" className="block text-gray-700 dark:text-gray-200 mb-2">Other Expenses (ZAR)</label>
+                                        <input
+                                            type="number"
+                                            id="other"
+                                            value={budgetData.other}
+                                            onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { other: e.target.value })); }}
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
+                                            placeholder="Enter other expenses"
+                                            aria-label="Other expenses in ZAR"
+                                        />
+                                    </div>
+                                    <button
+                                        onClick={calculateBudget}
+                                        className="w-full px-4 py-2 bg-emerald-600 text-white rounded"
+                                        aria-label="Calculate budget"
+                                    >
+                                        Calculate Budget
+                                    </button>
+                                </div>
+                            )}
 
                             {/* Results */}
-                            {calculated && (
-                                <div className="mt-6">
+                            {showResults && (
+                                <div>
                                     <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Your Budget Breakdown</h2>
                                     <div className="mb-6">
                                         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Summary</h3>
-                                        <p className="text-gray-700 dark:text-gray-200">Monthly Income: R {calculated.income.toFixed(2)}</p>
-                                        <p className="text-gray-700 dark:text-gray-200">Total Expenses: R {calculated.totalExpenses.toFixed(2)}</p>
-                                        <p className={calculated.remaining >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}>
-                                            Remaining: R {calculated.remaining.toFixed(2)}
+                                        <p className="text-gray-700 dark:text-gray-200">Monthly Income: R {showResults.income.toFixed(2)}</p>
+                                        <p className="text-gray-700 dark:text-gray-200">Total Expenses: R {showResults.totalExpenses.toFixed(2)}</p>
+                                        <p className={showResults.remaining >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}>
+                                            Remaining: R {showResults.remaining.toFixed(2)}
                                         </p>
                                     </div>
                                     <div className="mb-6">
                                         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Expense Distribution</h3>
                                         <div
                                             className="pie-chart"
-                                            style={{ background: calculated.pieChartGradient }}
+                                            style={{ background: showResults.pieChartGradient }}
                                         ></div>
                                         <div className="legend">
-                                            {Object.keys(calculated.expenses).map(function(category) {
-                                                if (calculated.percentages[category] > 0) {
+                                            {Object.keys(showResults.expenses).map(function(category) {
+                                                if (showResults.percentages[category] > 0) {
                                                     return (
                                                         <div key={category} className="legend-item">
                                                             <span
                                                                 className="legend-color"
-                                                                style={{ backgroundColor: calculated.colors[category] }}
+                                                                style={{ backgroundColor: showResults.colors[category] }}
                                                             ></span>
                                                             <span className="text-gray-700 dark:text-gray-200">
-                                                                {category.charAt(0).toUpperCase() + category.slice(1)}: {calculated.percentages[category].toFixed(1)}%
+                                                                {category.charAt(0).toUpperCase() + category.slice(1)}: {showResults.percentages[category].toFixed(1)}%
                                                             </span>
                                                         </div>
                                                     );
@@ -338,12 +342,12 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {Object.keys(calculated.expenses).map(function(category) {
+                                                {Object.keys(showResults.expenses).map(function(category) {
                                                     return (
                                                         <tr key={category}>
                                                             <td className="border-b py-2">{category.charAt(0).toUpperCase() + category.slice(1)}</td>
-                                                            <td className="border-b py-2">R {calculated.expenses[category].toFixed(2)}</td>
-                                                            <td className="border-b py-2">{calculated.percentages[category].toFixed(1)}%</td>
+                                                            <td className="border-b py-2">R {showResults.expenses[category].toFixed(2)}</td>
+                                                            <td className="border-b py-2">{showResults.percentages[category].toFixed(1)}%</td>
                                                         </tr>
                                                     );
                                                 })}
@@ -353,6 +357,13 @@
                                     <div className="mb-6 text-sm text-gray-600 dark:text-gray-400">
                                         <p><strong>Tip:</strong> Aim to keep your expenses below your income. If your remaining balance is negative, consider reducing expenses in non-essential categories like Entertainment.</p>
                                     </div>
+                                    <button
+                                        onClick={function() { setShowResults(false); }}
+                                        className="w-full px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded"
+                                        aria-label="Edit inputs"
+                                    >
+                                        Edit Inputs
+                                    </button>
                                 </div>
                             )}
                         </div>
