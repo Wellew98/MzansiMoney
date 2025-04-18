@@ -52,7 +52,7 @@
         }
     </style>
 </head>
-<body class="bg-amber-50 text-gray-800">
+<body class="bg-amber-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
     <div id="root"></div>
 
     <script type="text/babel">
@@ -130,7 +130,7 @@
 
                 var medicalAidEmployee = parseFloat(deductionData.medicalAidEmployee) || 0;
                 var medicalOutOfPocket = parseFloat(deductionData.medicalOutOfPocket) || 0;
-                var medicalCredits = medicalAidEmployee / 12 * 4; // Simplified: 4x monthly contribution as credit
+                var medicalCredits = medicalAidEmployee / 12 * 4; // Simplified
                 var medicalDeduction = Math.max(0, (medicalAidEmployee + medicalOutOfPocket) - (grossIncome * 0.075));
 
                 var donations = parseFloat(deductionData.donations) || 0;
@@ -147,11 +147,11 @@
                 var cgtExpenses = parseFloat(deductionData.cgtExpenses) || 0;
                 var cgtGain = Math.max(0, cgtSelling - cgtPurchase - cgtExpenses);
                 var cgtTaxable = cgtGain * 0.4; // 40% inclusion rate
-                var cgtAnnualExclusion = cgtGain > 40000 ? 40000 : 0; // Annual exclusion
+                var cgtAnnualExclusion = cgtGain > 40000 ? 40000 : 0;
 
                 var taxableIncome = Math.max(0, grossIncome - retirementDeduction - medicalDeduction - donationDeduction - homeOfficeExpenses - travelDeduction + (cgtTaxable - cgtAnnualExclusion));
 
-                // SARS 2025/26 Tax Brackets
+                // SARS 2025/26 Tax Brackets (placeholder)
                 var tax = 0;
                 if (taxableIncome <= 237100) tax = taxableIncome * 0.18;
                 else if (taxableIncome <= 370500) tax = 42678 + (taxableIncome - 237100) * 0.26;
@@ -161,7 +161,7 @@
                 else if (taxableIncome <= 1817000) tax = 251258 + (taxableIncome - 857900) * 0.41;
                 else tax = 644489 + (taxableIncome - 1817000) * 0.45;
 
-                var rebates = 17235; // Primary rebate only, for simplicity
+                var rebates = 17235; // Primary rebate only
                 var netTax = Math.max(0, tax - rebates - medicalCredits);
 
                 return {
@@ -196,13 +196,13 @@
 
             var insights = [];
             if (taxData.retirementDeduction < 350000 && taxData.retirementDeduction < taxData.grossIncome * 0.275) {
-                insights.push("Consider increasing your retirement contributions to reduce your taxable income further. You can contribute up to the lesser of 27.5% of your income or R350,000.");
+                insights.push("Consider increasing your retirement contributions to reduce your taxable income further.");
             }
             if (deductionData.medicalOutOfPocket > 0) {
                 insights.push("Ensure you keep detailed records of your out-of-pocket medical expenses for potential deductions.");
             }
             if (deductionData.homeOffice && !deductionData.homeOfficeExpenses) {
-                insights.push("Since you work from home, explore claiming home office expenses. You need a dedicated workspace used exclusively for work.");
+                insights.push("Since you work from home, explore claiming home office expenses.");
             }
 
             // Calculate bar widths for visualization
@@ -223,21 +223,20 @@
                     <header className="sticky top-0 z-50 bg-amber-50 dark:bg-gray-900 shadow-md">
                         <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
                             <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-                                <a href="file:///C:/Users/tenders\Desktop/mzansimoney/index.html">MzansiMoney</a>
+                                <a href="/index.html">MzansiMoney</a>
                             </div>
                             <div className="space-x-6 flex items-center">
-                                <a href="file:///C:/Users/tenders\Desktop/mzansimoney/index.html#home" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Home</a>
-                                <a href="file:///C:/Users/tenders\Desktop/mzansimoney/index.html#tools" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Tools</a>
-                                <a href="file:///C:/Users/tenders\Desktop/mzansimoney/tools/income-tax.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Tax Calculator</a>
-                                <a href="file:///C:/Users/tenders\Desktop/mzansimoney/tools/budget-planner.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Budget Planner</a>
-                                <a href="file:///C:/Users/tenders\Desktop/mzansimoney/tools/vat-calculator.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">VAT Calculator</a>
-                                <a href="file:///C:/Users/tenders\Desktop/mzansimoney/articles.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Articles</a>
+                                <a href="/index.html#home" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Home</a>
+                                <a href="/income-tax.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Tax Calculator</a>
+                                <a href="/budget-planner.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Budget Planner</a>
+                                <a href="/vat-calculator.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">VAT Calculator</a>
+                                <a href="/articles.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Articles</a>
                                 <button
                                     onClick={function() { setDarkMode(!darkMode); }}
                                     className="p-2 rounded-full bg-gray-200 dark:bg-gray-700"
                                     aria-label="Toggle dark mode"
                                 >
-                                    {darkMode ? '??' : '??'}
+                                    {darkMode ? '☀️' : '🌙'}
                                 </button>
                             </div>
                         </nav>
@@ -247,26 +246,6 @@
                     <div className="container mx-auto px-4 py-16">
                         <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-8 text-center">TaxWise Navigator</h1>
                         <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                            {/* Step Navigation */}
-                            <div className="flex justify-between mb-6">
-                                <button
-                                    onClick={function() { setStep(Math.max(1, step - 1)); }}
-                                    className="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded disabled:opacity-50"
-                                    disabled={step === 1}
-                                    aria-label="Previous step"
-                                >
-                                    Previous
-                                </button>
-                                <button
-                                    onClick={function() { setStep(Math.min(3, step + 1)); }}
-                                    className="px-4 py-2 bg-emerald-600 text-white rounded disabled:opacity-50"
-                                    disabled={step === 3}
-                                    aria-label="Next step"
-                                >
-                                    Next
-                                </button>
-                            </div>
-
                             {/* Step 1: Income Input */}
                             {step === 1 && (
                                 <div>
@@ -278,7 +257,7 @@
                                             id="basicSalary"
                                             value={incomeData.basicSalary}
                                             onChange={function(e) { setIncomeData(Object.assign({}, incomeData, { basicSalary: e.target.value })); }}
-                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                             placeholder="Enter monthly salary"
                                             aria-label="Monthly basic salary in ZAR"
                                         />
@@ -290,7 +269,7 @@
                                             id="travelAllowance"
                                             value={incomeData.travelAllowance}
                                             onChange={function(e) { setIncomeData(Object.assign({}, incomeData, { travelAllowance: e.target.value })); }}
-                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                             placeholder="Enter travel allowance"
                                             aria-label="Travel allowance in ZAR"
                                         />
@@ -302,7 +281,7 @@
                                             id="housingAllowance"
                                             value={incomeData.housingAllowance}
                                             onChange={function(e) { setIncomeData(Object.assign({}, incomeData, { housingAllowance: e.target.value })); }}
-                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                             placeholder="Enter housing allowance"
                                             aria-label="Housing allowance in ZAR"
                                         />
@@ -314,7 +293,7 @@
                                             id="medicalAidEmployer"
                                             value={incomeData.medicalAidEmployer}
                                             onChange={function(e) { setIncomeData(Object.assign({}, incomeData, { medicalAidEmployer: e.target.value })); }}
-                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                             placeholder="Enter employer contribution"
                                             aria-label="Employer medical aid contribution in ZAR"
                                         />
@@ -326,10 +305,28 @@
                                             id="otherIncome"
                                             value={incomeData.otherIncome}
                                             onChange={function(e) { setIncomeData(Object.assign({}, incomeData, { otherIncome: e.target.value })); }}
-                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                             placeholder="Enter other income"
                                             aria-label="Other income in ZAR"
                                         />
+                                    </div>
+                                    <div className="flex justify-between mt-6">
+                                        <button
+                                            onClick={function() { setStep(Math.max(1, step - 1)); }}
+                                            className="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded disabled:opacity-50"
+                                            disabled={step === 1}
+                                            aria-label="Previous step"
+                                        >
+                                            Previous
+                                        </button>
+                                        <button
+                                            onClick={function() { setStep(Math.min(3, step + 1)); }}
+                                            className="px-4 py-2 bg-emerald-600 text-white rounded disabled:opacity-50"
+                                            disabled={step === 3}
+                                            aria-label="Next step"
+                                        >
+                                            Next
+                                        </button>
                                     </div>
                                 </div>
                             )}
@@ -345,7 +342,7 @@
                                             id="pension"
                                             value={deductionData.pension}
                                             onChange={function(e) { setDeductionData(Object.assign({}, deductionData, { pension: e.target.value })); }}
-                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                             placeholder="Enter pension contributions"
                                             aria-label="Pension contributions in ZAR"
                                         />
@@ -357,7 +354,7 @@
                                             id="provident"
                                             value={deductionData.provident}
                                             onChange={function(e) { setDeductionData(Object.assign({}, deductionData, { provident: e.target.value })); }}
-                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                             placeholder="Enter provident contributions"
                                             aria-label="Provident fund contributions in ZAR"
                                         />
@@ -369,7 +366,7 @@
                                             id="retirementAnnuity"
                                             value={deductionData.retirementAnnuity}
                                             onChange={function(e) { setDeductionData(Object.assign({}, deductionData, { retirementAnnuity: e.target.value })); }}
-                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                             placeholder="Enter retirement annuity contributions"
                                             aria-label="Retirement annuity contributions in ZAR"
                                         />
@@ -381,7 +378,7 @@
                                             id="medicalAidEmployee"
                                             value={deductionData.medicalAidEmployee}
                                             onChange={function(e) { setDeductionData(Object.assign({}, deductionData, { medicalAidEmployee: e.target.value })); }}
-                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                             placeholder="Enter your contribution"
                                             aria-label="Employee medical aid contribution in ZAR"
                                         />
@@ -393,7 +390,7 @@
                                             id="medicalOutOfPocket"
                                             value={deductionData.medicalOutOfPocket}
                                             onChange={function(e) { setDeductionData(Object.assign({}, deductionData, { medicalOutOfPocket: e.target.value })); }}
-                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                             placeholder="Enter medical expenses"
                                             aria-label="Out-of-pocket medical expenses in ZAR"
                                         />
@@ -405,7 +402,7 @@
                                             id="donations"
                                             value={deductionData.donations}
                                             onChange={function(e) { setDeductionData(Object.assign({}, deductionData, { donations: e.target.value })); }}
-                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                             placeholder="Enter donations"
                                             aria-label="Donations to PBOs in ZAR"
                                         />
@@ -429,7 +426,7 @@
                                                     id="homeOfficeExpenses"
                                                     value={deductionData.homeOfficeExpenses}
                                                     onChange={function(e) { setDeductionData(Object.assign({}, deductionData, { homeOfficeExpenses: e.target.value })); }}
-                                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                                     placeholder="Enter expenses"
                                                     aria-label="Home office expenses in ZAR"
                                                 />
@@ -455,7 +452,7 @@
                                                     id="businessKm"
                                                     value={deductionData.businessKm}
                                                     onChange={function(e) { setDeductionData(Object.assign({}, deductionData, { businessKm: e.target.value })); }}
-                                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                                     placeholder="Enter business km"
                                                     aria-label="Business kilometers"
                                                 />
@@ -465,7 +462,7 @@
                                                     id="totalKm"
                                                     value={deductionData.totalKm}
                                                     onChange={function(e) { setDeductionData(Object.assign({}, deductionData, { totalKm: e.target.value })); }}
-                                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                                     placeholder="Enter total km"
                                                     aria-label="Total kilometers"
                                                 />
@@ -480,7 +477,7 @@
                                             id="cgtPurchase"
                                             value={deductionData.cgtPurchase}
                                             onChange={function(e) { setDeductionData(Object.assign({}, deductionData, { cgtPurchase: e.target.value })); }}
-                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                             placeholder="Enter purchase price"
                                             aria-label="Purchase price in ZAR"
                                         />
@@ -490,7 +487,7 @@
                                             id="cgtSelling"
                                             value={deductionData.cgtSelling}
                                             onChange={function(e) { setDeductionData(Object.assign({}, deductionData, { cgtSelling: e.target.value })); }}
-                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                             placeholder="Enter selling price"
                                             aria-label="Selling price in ZAR"
                                         />
@@ -500,10 +497,28 @@
                                             id="cgtExpenses"
                                             value={deductionData.cgtExpenses}
                                             onChange={function(e) { setDeductionData(Object.assign({}, deductionData, { cgtExpenses: e.target.value })); }}
-                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                            className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                             placeholder="Enter expenses"
                                             aria-label="Allowable expenses in ZAR"
                                         />
+                                    </div>
+                                    <div className="flex justify-between mt-6">
+                                        <button
+                                            onClick={function() { setStep(Math.max(1, step - 1)); }}
+                                            className="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded disabled:opacity-50"
+                                            disabled={step === 1}
+                                            aria-label="Previous step"
+                                        >
+                                            Previous
+                                        </button>
+                                        <button
+                                            onClick={function() { setStep(Math.min(3, step + 1)); }}
+                                            className="px-4 py-2 bg-emerald-600 text-white rounded disabled:opacity-50"
+                                            disabled={step === 3}
+                                            aria-label="Next step"
+                                        >
+                                            Next
+                                        </button>
                                     </div>
                                 </div>
                             )}
@@ -514,14 +529,14 @@
                                     <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Step 3: Your Tax Breakdown</h2>
                                     <div className="mb-6">
                                         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Tax Calculation</h3>
-                                        <p>Gross Income: R {taxData.grossIncome.toFixed(2)}</p>
-                                        <p>Taxable Income: R {taxData.taxableIncome.toFixed(2)}</p>
-                                        <p>Tax Before Rebates: R {taxData.tax.toFixed(2)}</p>
-                                        <p>Rebates: R {taxData.rebates.toFixed(2)}</p>
-                                        <p>Medical Credits: R {taxData.medicalCredits.toFixed(2)}</p>
+                                        <p className="text-gray-700 dark:text-gray-200">Gross Income: R {taxData.grossIncome.toFixed(2)}</p>
+                                        <p className="text-gray-700 dark:text-gray-200">Taxable Income: R {taxData.taxableIncome.toFixed(2)}</p>
+                                        <p className="text-gray-700 dark:text-gray-200">Tax Before Rebates: R {taxData.tax.toFixed(2)}</p>
+                                        <p className="text-gray-700 dark:text-gray-200">Rebates: R {taxData.rebates.toFixed(2)}</p>
+                                        <p className="text-gray-700 dark:text-gray-200">Medical Credits: R {taxData.medicalCredits.toFixed(2)}</p>
                                         <p className="font-semibold text-emerald-600 dark:text-emerald-400">Net Tax Payable: R {taxData.netTax.toFixed(2)}</p>
                                         {taxData.cgtTaxable > 0 && (
-                                            <p>Capital Gains Taxable Amount: R {taxData.cgtTaxable.toFixed(2)}</p>
+                                            <p className="text-gray-700 dark:text-gray-200">Capital Gains Taxable Amount: R {taxData.cgtTaxable.toFixed(2)}</p>
                                         )}
                                     </div>
                                     <div className="mb-6">
