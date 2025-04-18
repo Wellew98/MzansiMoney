@@ -60,7 +60,7 @@
         }
     </style>
 </head>
-<body class="bg-amber-50 text-gray-800">
+<body class="bg-amber-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
     <div id="root"></div>
 
     <script type="text/babel">
@@ -169,21 +169,20 @@
                     <header className="sticky top-0 z-50 bg-amber-50 dark:bg-gray-900 shadow-md">
                         <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
                             <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-                                <a href="file:///C:/Users/tenders\Desktop/mzansimoney/index.html">MzansiMoney</a>
+                                <a href="/index.html">MzansiMoney</a>
                             </div>
                             <div className="space-x-6 flex items-center">
-                                <a href="file:///C:/Users/tenders\Desktop/mzansimoney/index.html#home" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Home</a>
-                                <a href="file:///C:/Users/tenders\Desktop/mzansimoney/index.html#tools" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Tools</a>
-                                <a href="file:///C:/Users/tenders\Desktop/mzansimoney/tools/income-tax.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Tax Calculator</a>
-                                <a href="file:///C:/Users/tenders\Desktop/mzansimoney/tools/budget-planner.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Budget Planner</a>
-                                <a href="file:///C:/Users/tenders\Desktop/mzansimoney/tools/vat-calculator.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">VAT Calculator</a>
-                                <a href="file:///C:/Users/tenders\Desktop/mzansimoney/articles.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Articles</a>
+                                <a href="/index.html#home" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Home</a>
+                                <a href="/income-tax.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Tax Calculator</a>
+                                <a href="/budget-planner.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Budget Planner</a>
+                                <a href="/vat-calculator.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">VAT Calculator</a>
+                                <a href="/articles.html" className="text-gray-700 dark:text-gray-200 hover:text-emerald-600">Articles</a>
                                 <button
                                     onClick={function() { setDarkMode(!darkMode); }}
                                     className="p-2 rounded-full bg-gray-200 dark:bg-gray-700"
                                     aria-label="Toggle dark mode"
                                 >
-                                    {darkMode ? '??' : '??'}
+                                    {darkMode ? '☀️' : '🌙'}
                                 </button>
                             </div>
                         </nav>
@@ -202,7 +201,7 @@
                                     id="income"
                                     value={budgetData.income}
                                     onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { income: e.target.value })); }}
-                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                     placeholder="Enter monthly income"
                                     aria-label="Monthly income in ZAR"
                                 />
@@ -217,7 +216,7 @@
                                     id="rent"
                                     value={budgetData.rent}
                                     onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { rent: e.target.value })); }}
-                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                     placeholder="Enter rent expenses"
                                     aria-label="Rent expenses in ZAR"
                                 />
@@ -229,7 +228,7 @@
                                     id="food"
                                     value={budgetData.food}
                                     onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { food: e.target.value })); }}
-                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                     placeholder="Enter food expenses"
                                     aria-label="Food expenses in ZAR"
                                 />
@@ -241,7 +240,7 @@
                                     id="transport"
                                     value={budgetData.transport}
                                     onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { transport: e.target.value })); }}
-                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                     placeholder="Enter transport expenses"
                                     aria-label="Transport expenses in ZAR"
                                 />
@@ -253,7 +252,7 @@
                                     id="entertainment"
                                     value={budgetData.entertainment}
                                     onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { entertainment: e.target.value })); }}
-                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                     placeholder="Enter entertainment expenses"
                                     aria-label="Entertainment expenses in ZAR"
                                 />
@@ -265,7 +264,7 @@
                                     id="savings"
                                     value={budgetData.savings}
                                     onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { savings: e.target.value })); }}
-                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                     placeholder="Enter savings amount"
                                     aria-label="Savings amount in ZAR"
                                 />
@@ -277,7 +276,7 @@
                                     id="other"
                                     value={budgetData.other}
                                     onChange={function(e) { setBudgetData(Object.assign({}, budgetData, { other: e.target.value })); }}
-                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                                    className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600"
                                     placeholder="Enter other expenses"
                                     aria-label="Other expenses in ZAR"
                                 />
@@ -297,8 +296,8 @@
                                     <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Your Budget Breakdown</h2>
                                     <div className="mb-6">
                                         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Summary</h3>
-                                        <p>Monthly Income: R {calculated.income.toFixed(2)}</p>
-                                        <p>Total Expenses: R {calculated.totalExpenses.toFixed(2)}</p>
+                                        <p className="text-gray-700 dark:text-gray-200">Monthly Income: R {calculated.income.toFixed(2)}</p>
+                                        <p className="text-gray-700 dark:text-gray-200">Total Expenses: R {calculated.totalExpenses.toFixed(2)}</p>
                                         <p className={calculated.remaining >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}>
                                             Remaining: R {calculated.remaining.toFixed(2)}
                                         </p>
