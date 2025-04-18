@@ -9,11 +9,11 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
     <!-- React CDNs -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.4/babel.min.js"></script>
     <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -21,7 +21,6 @@
         h1, h2, h3 {
             font-family: 'Poppins', sans-serif;
         }
-        /* Custom Colors */
         .bg-deep-purple { background-color: #4A148C; }
         .text-deep-purple { color: #4A148C; }
         .bg-gold { background-color: #FFD700; }
@@ -32,9 +31,7 @@
         .bg-charcoal { background-color: #212121; }
         .bg-charcoal-light { background-color: #333333; }
         .text-light-gray { color: #E0E0E0; }
-        /* Light Mode */
         body { background-color: #F5F5F5; }
-        /* Dark Mode */
         body.dark {
             background-color: #212121;
         }
@@ -43,7 +40,6 @@
         body.dark .bg-white { background-color: #333333; }
         body.dark .text-deep-purple { color: #FFD700; }
         body.dark canvas { background-color: #333333; }
-        /* Hover Effects */
         .hover\:text-gold:hover { color: #FFD700; }
         .hover\:bg-gold:hover { background-color: #FFD700; color: #FFFFFF; }
     </style>
@@ -52,59 +48,48 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        var _React = React;
-        var useState = _React.useState;
-        var useEffect = _React.useEffect;
+        const { useState, useEffect, useRef } = React;
 
         function TaxCalculator() {
-            var darkModeState = useState(true); // Default to dark mode
-            var darkMode = darkModeState[0];
-            var setDarkMode = darkModeState[1];
-
-            var taxDataState = useState({
+            const [darkMode, setDarkMode] = useState(true);
+            const [taxData, setTaxData] = useState({
                 monthlySalary: '',
+                hasTravelAllowance: 'no',
                 travelAllowance: '',
                 housingAllowance: '',
                 employerMedical: '',
                 otherIncome: '',
-                pension: '',
-                provident: '',
-                retirementAnnuity: '',
+                hasSalaryContributions: 'no',
+                salaryContributions: '',
+                hasPrivateContributions: 'no',
+                privateContributions: '',
                 dependents: '',
                 employeeMedical: '',
                 medicalExpenses: '',
                 donations: '',
                 workFromHome: false,
+                homeOfficeDeductionAmount: '',
                 claimTravel: false,
+                travelDeductionAmount: '',
                 purchasePrice: '',
                 sellingPrice: '',
                 allowableExpenses: '',
                 ageRange: 'under65'
             });
-            var taxData = taxDataState[0];
-            var setTaxData = taxDataState[1];
+            const [showResults, setShowResults] = useState(false);
+            const chartRef = useRef(null);
+            const chartInstance = useRef(null);
 
-            var showResultsState = useState(false);
-            var showResults = showResultsState[0];
-            var setShowResults = showResultsState[1];
-
-            var chartRef = React.useRef(null);
-            var chartInstance = React.useRef(null);
-
-            useEffect(function() {
-                if (darkMode) {
-                    document.body.classList.add('dark');
-                } else {
-                    document.body.classList.remove('dark');
-                }
+            useEffect(() => {
+                document.body.classList.toggle('dark', darkMode);
             }, [darkMode]);
 
-            useEffect(function() {
+            useEffect(() => {
                 if (showResults && chartRef.current) {
                     if (chartInstance.current) {
                         chartInstance.current.destroy();
                     }
-                    var ctx = chartRef.current.getContext('2d');
+                    const ctx = chartRef.current.getContext('2d');
                     chartInstance.current = new Chart(ctx, {
                         type: 'bar',
                         data: {
@@ -133,16 +118,16 @@
                                     showResults.finalTax
                                 ].filter(data => data !== null),
                                 backgroundColor: [
-                                    '#808080', // Income (gray)
-                                    '#808080', // Taxable Income
-                                    '#4A148C', // Tax Before (Deep Purple)
-                                    '#FFD700', // Rebates (Gold)
-                                    '#2E7D32', // Credits (Green)
-                                    '#2E7D32', // Home Office
-                                    '#2E7D32', // Travel
-                                    '#4A148C', // Capital Gains
-                                    '#4A148C'  // Final Tax
-                                ].slice(0, showResults.taxableCapitalGain > 0 ? 9 : showResults.homeOfficeDeduction > 0 || showResults.travelDeduction > 0 ? 7 : 5)
+                                    '#808080',
+                                    '#808080',
+                                    '#4A148C',
+                                    '#FFD700',
+                                    '#2E7D32',
+                                    '#2E7D32',
+                                    '#2E7D32',
+                                    '#4A148C',
+                                    '#4A148C'
+                                ].slice(0, showResults.taxableCapitalGain > 0 ? 9 : (showResults.homeOfficeDeduction > 0 || showResults.travelDeduction > 0) ? 7 : 5)
                             }]
                         },
                         options: {
@@ -161,126 +146,119 @@
                                 legend: { display: false },
                                 tooltip: {
                                     callbacks: {
-                                        label: function(context) {
-                                            return context.dataset.label + ': R ' + context.parsed.x.toFixed(2);
-                                        }
+                                        label: (context) => `R ${context.parsed.x.toFixed(2)}`
                                     }
                                 }
                             }
                         }
                     });
                 }
-                return function() {
+                return () => {
                     if (chartInstance.current) {
                         chartInstance.current.destroy();
                     }
                 };
             }, [showResults, darkMode]);
 
-            function calculateTax() {
-                // Income
-                var monthlySalary = parseFloat(taxData.monthlySalary) || 0;
-                var travelAllowance = parseFloat(taxData.travelAllowance) || 0;
-                var housingAllowance = parseFloat(taxData.housingAllowance) || 0;
-                var employerMedical = parseFloat(taxData.employerMedical) || 0;
-                var otherIncome = parseFloat(taxData.otherIncome) || 0;
-                var totalIncome = (monthlySalary * 12) + travelAllowance + housingAllowance + employerMedical + otherIncome;
+            const calculateTax = () => {
+                try {
+                    // Income
+                    const monthlySalary = parseFloat(taxData.monthlySalary) || 0;
+                    const travelAllowance = parseFloat(taxData.travelAllowance) || 0;
+                    const housingAllowance = parseFloat(taxData.housingAllowance) || 0;
+                    const employerMedical = parseFloat(taxData.employerMedical) || 0;
+                    const otherIncome = parseFloat(taxData.otherIncome) || 0;
+                    const totalIncome = (monthlySalary * 12) + travelAllowance + housingAllowance + employerMedical + otherIncome;
 
-                // Deductions
-                var pension = parseFloat(taxData.pension) || 0;
-                var provident = parseFloat(taxData.provident) || 0;
-                var retirementAnnuity = parseFloat(taxData.retirementAnnuity) || 0;
-                var donations = parseFloat(taxData.donations) || 0;
-                var workFromHome = taxData.workFromHome;
-                var claimTravel = taxData.claimTravel;
+                    // Deductions
+                    const salaryContributions = parseFloat(taxData.salaryContributions) || 0;
+                    const privateContributions = parseFloat(taxData.privateContributions) || 0;
+                    const donations = parseFloat(taxData.donations) || 0;
+                    const workFromHome = taxData.workFromHome;
+                    const claimTravel = taxData.claimTravel;
+                    const homeOfficeDeduction = workFromHome ? (parseFloat(taxData.homeOfficeDeductionAmount) || 0) : 0;
+                    const travelDeduction = claimTravel ? (parseFloat(taxData.travelDeductionAmount) || 0) : 0;
 
-                var retirementTotal = pension + provident + retirementAnnuity;
-                var maxRetirementDeduction = Math.min(retirementTotal, totalIncome * 0.275, 350000);
-                var maxDonationsDeduction = Math.min(donations, totalIncome * 0.1);
-                var homeOfficeDeduction = workFromHome ? totalIncome * 0.1 : 0; // 10% placeholder
-                var travelDeduction = claimTravel ? totalIncome * 0.05 : 0; // 5% placeholder
+                    const retirementTotal = salaryContributions + privateContributions;
+                    const maxRetirementDeduction = Math.min(retirementTotal, totalIncome * 0.275, 350000);
+                    const maxDonationsDeduction = Math.min(donations, totalIncome * 0.1);
 
-                // Capital Gains
-                var purchasePrice = parseFloat(taxData.purchasePrice) || 0;
-                var sellingPrice = parseFloat(taxData.sellingPrice) || 0;
-                var allowableExpenses = parseFloat(taxData.allowableExpenses) || 0;
-                var capitalGain = sellingPrice - purchasePrice - allowableExpenses;
-                var taxableCapitalGain = Math.max(0, capitalGain - 40000) * 0.4; // 40% inclusion, R40,000 exclusion
+                    // Capital Gains
+                    const purchasePrice = parseFloat(taxData.purchasePrice) || 0;
+                    const sellingPrice = parseFloat(taxData.sellingPrice) || 0;
+                    const allowableExpenses = parseFloat(taxData.allowableExpenses) || 0;
+                    const capitalGain = sellingPrice - purchasePrice - allowableExpenses;
+                    const taxableCapitalGain = Math.max(0, capitalGain - 40000) * 0.4;
 
-                // Taxable Income
-                var taxableIncome = Math.max(0, totalIncome - maxRetirementDeduction - maxDonationsDeduction - homeOfficeDeduction - travelDeduction) + taxableCapitalGain;
+                    // Taxable Income
+                    const taxableIncome = Math.max(0, totalIncome - maxRetirementDeduction - maxDonationsDeduction - homeOfficeDeduction - travelDeduction) + taxableCapitalGain;
 
-                // SARS 2025/26 Tax Brackets (projected)
-                var tax = 0;
-                if (taxableIncome > 1904300) {
-                    tax = 675054 + (taxableIncome - 1904300) * 0.45;
-                } else if (taxableIncome > 717100) {
-                    tax = 211260 + (taxableIncome - 717100) * 0.41;
-                } else if (taxableIncome > 536700) {
-                    tax = 136157 + (taxableIncome - 536700) * 0.36;
-                } else if (taxableIncome > 388100) {
-                    tax = 81161 + (taxableIncome - 388100) * 0.31;
-                } else if (taxableIncome > 248500) {
-                    tax = 44726 + (taxableIncome - 248500) * 0.26;
-                } else if (taxableIncome > 0) {
-                    tax = taxableIncome * 0.18;
+                    // SARS 2025/26 Tax Brackets (projected)
+                    let tax = 0;
+                    if (taxableIncome > 1904300) {
+                        tax = 675054 + (taxableIncome - 1904300) * 0.45;
+                    } else if (taxableIncome > 717100) {
+                        tax = 211260 + (taxableIncome - 717100) * 0.41;
+                    } else if (taxableIncome > 536700) {
+                        tax = 136157 + (taxableIncome - 536700) * 0.36;
+                    } else if (taxableIncome > 388100) {
+                        tax = 81161 + (taxableIncome - 388100) * 0.31;
+                    } else if (taxableIncome > 248500) {
+                        tax = 44726 + (taxableIncome - 248500) * 0.26;
+                    } else if (taxableIncome > 0) {
+                        tax = taxableIncome * 0.18;
+                    }
+
+                    // Rebates
+                    const primaryRebate = 18063;
+                    const secondaryRebate = taxData.ageRange !== 'under65' ? 9900 : 0;
+                    const tertiaryRebate = taxData.ageRange === '75plus' ? 3294 : 0;
+                    const totalRebate = primaryRebate + secondaryRebate + tertiaryRebate;
+
+                    // Medical Credits
+                    const dependents = parseInt(taxData.dependents) || 0;
+                    const employeeMedical = parseFloat(taxData.employeeMedical) || 0;
+                    const medicalExpenses = parseFloat(taxData.medicalExpenses) || 0;
+                    let medicalCredit = 0;
+                    if (dependents >= 2) {
+                        medicalCredit = (364 * 2 + 246 * (dependents - 2)) * 12;
+                    } else if (dependents === 1) {
+                        medicalCredit = 364 * 12;
+                    }
+                    medicalCredit += employeeMedical + medicalExpenses;
+
+                    // Final Tax
+                    const taxBeforeRebates = tax;
+                    tax = Math.max(0, tax - totalRebate);
+                    const finalTax = Math.max(0, tax - medicalCredit);
+                    const capitalGainsTax = taxableCapitalGain > 0 ? (finalTax - Math.max(0, taxBeforeRebates - totalRebate - medicalCredit)) : 0;
+                    const effectiveTaxRate = taxableIncome > 0 ? (finalTax / taxableIncome * 100).toFixed(2) : 0;
+
+                    // Threshold
+                    const threshold = taxData.ageRange === 'under65' ? 100350 : taxData.ageRange === '65to74' ? 155100 : 173600;
+
+                    setShowResults({
+                        totalIncome,
+                        taxableIncome,
+                        taxBeforeRebates,
+                        totalRebate,
+                        medicalCredit,
+                        finalTax,
+                        capitalGainsTax,
+                        effectiveTaxRate,
+                        threshold,
+                        taxableCapitalGain,
+                        homeOfficeDeduction,
+                        travelDeduction
+                    });
+                } catch (error) {
+                    console.error('Calculation error:', error);
+                    alert('An error occurred during calculation. Please check your inputs and try again.');
                 }
-
-                // Rebates
-                var primaryRebate = 18063;
-                var secondaryRebate = taxData.ageRange !== 'under65' ? 9900 : 0;
-                var tertiaryRebate = taxData.ageRange === '75plus' ? 3294 : 0;
-                var totalRebate = primaryRebate + secondaryRebate + tertiaryRebate;
-
-                // Medical Credits
-                var dependents = parseInt(taxData.dependents) || 0;
-                var employeeMedical = parseFloat(taxData.employeeMedical) || 0;
-                var medicalExpenses = parseFloat(taxData.medicalExpenses) || 0;
-                var medicalCredit = 0;
-                if (dependents >= 2) {
-                    medicalCredit = (364 * 2 + 246 * (dependents - 2)) * 12;
-                } else if (dependents === 1) {
-                    medicalCredit = 364 * 12;
-                }
-                medicalCredit += employeeMedical + medicalExpenses; // Simplified
-
-                // Final Tax
-                var taxBeforeRebates = tax;
-                tax = Math.max(0, tax - totalRebate);
-                var finalTax = Math.max(0, tax - medicalCredit);
-                var capitalGainsTax = taxableCapitalGain > 0 ? (finalTax - Math.max(0, taxBeforeRebates - totalRebate - medicalCredit)) : 0;
-                var effectiveTaxRate = taxableIncome > 0 ? (finalTax / taxableIncome * 100).toFixed(2) : 0;
-
-                // Threshold
-                var threshold = 0;
-                if (taxData.ageRange === 'under65') {
-                    threshold = 100350;
-                } else if (taxData.ageRange === '65to74') {
-                    threshold = 155100;
-                } else {
-                    threshold = 173600;
-                }
-
-                setShowResults({
-                    totalIncome: totalIncome,
-                    taxableNamibianIncome: taxableNamibianIncome,
-                    taxableIncome: taxableIncome,
-                    taxBeforeRebates: taxBeforeRebates,
-                    totalRebate: totalRebate,
-                    medicalCredit: medicalCredit,
-                    finalTax: finalTax,
-                    capitalGainsTax: capitalGainsTax,
-                    effectiveTaxRate: effectiveTaxRate,
-                    threshold: threshold,
-                    taxableCapitalGain: taxableCapitalGain,
-                    homeOfficeDeduction: homeOfficeDeduction,
-                    travelDeduction: travelDeduction
-                });
-            }
+            };
 
             return (
                 <div className="min-h-screen">
-                    {/* Header */}
                     <header className="sticky top-0 z-50 bg-deep-purple shadow-md">
                         <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
                             <div className="text-2xl font-bold text-white">
@@ -293,7 +271,7 @@
                                 <a href="/vat-calculator.html" className="text-gold hover:text-white">VAT Calculator</a>
                                 <a href="/articles.html" className="text-gold hover:text-white">Articles</a>
                                 <button
-                                    onClick={function() { setDarkMode(!darkMode); }}
+                                    onClick={() => setDarkMode(!darkMode)}
                                     className="p-2 rounded-full bg-gray-200 dark:bg-charcoal text-deep-purple dark:text-gold"
                                     aria-label="Toggle dark mode"
                                 >
@@ -302,16 +280,12 @@
                             </div>
                         </nav>
                     </header>
-
-                    {/* Main Content */}
                     <div className="container mx-auto px-4 py-16">
                         <h1 className="text-3xl font-bold text-gold mb-8 text-center">TaxWise Navigator</h1>
                         <div className="max-w-2xl mx-auto bg-white dark:bg-charcoal-light p-6 rounded-lg shadow-md">
-                            {/* Tax Form */}
-                            {!showResults && (
+                            {!showResults ? (
                                 <div>
                                     <h2 className="text-2xl font-semibold text-gold mb-4">Enter Your Tax Details</h2>
-                                    {/* Income Details */}
                                     <h3 className="text-lg font-semibold text-gold mb-2">Income Details</h3>
                                     <div className="mb-4">
                                         <label htmlFor="monthlySalary" className="block text-gray-600 dark:text-light-gray mb-2">Monthly Basic Salary (ZAR)</label>
@@ -319,23 +293,54 @@
                                             type="number"
                                             id="monthlySalary"
                                             value={taxData.monthlySalary}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { monthlySalary: e.target.value })); }}
+                                            onChange={(e) => setTaxData({ ...taxData, monthlySalary: e.target.value })}
                                             className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
                                             placeholder="Enter monthly salary"
                                             aria-label="Monthly basic salary in ZAR"
                                         />
                                     </div>
                                     <div className="mb-4">
-                                        <label htmlFor="travelAllowance" className="block text-gray-600 dark:text-light-gray mb-2">Travel Allowance (ZAR)</label>
-                                        <input
-                                            type="number"
-                                            id="travelAllowance"
-                                            value={taxData.travelAllowance}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { travelAllowance: e.target.value })); }}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter travel allowance"
-                                            aria-label="Travel allowance in ZAR"
-                                        />
+                                        <label className="block text-gray-600 dark:text-light-gray mb-2">Does your salary include money for a travel allowance?</label>
+                                        <div className="flex space-x-4">
+                                            <label className="flex items-center text-gray-600 dark:text-light-gray">
+                                                <input
+                                                    type="radio"
+                                                    name="hasTravelAllowance"
+                                                    value="yes"
+                                                    checked={taxData.hasTravelAllowance === 'yes'}
+                                                    onChange={(e) => setTaxData({ ...taxData, hasTravelAllowance: e.target.value })}
+                                                    className="mr-2"
+                                                    aria-label="Travel allowance yes"
+                                                />
+                                                Yes
+                                            </label>
+                                            <label className="flex items-center text-gray-600 dark:text-light-gray">
+                                                <input
+                                                    type="radio"
+                                                    name="hasTravelAllowance"
+                                                    value="no"
+                                                    checked={taxData.hasTravelAllowance === 'no'}
+                                                    onChange={(e) => setTaxData({ ...taxData, hasTravelAllowance: e.target.value, travelAllowance: '' })}
+                                                    className="mr-2"
+                                                    aria-label="Travel allowance no"
+                                                />
+                                                No
+                                            </label>
+                                        </div>
+                                        {taxData.hasTravelAllowance === 'yes' && (
+                                            <div className="mt-2">
+                                                <label htmlFor="travelAllowance" className="block text-gray-600 dark:text-light-gray mb-2">Please enter the amount (ZAR)</label>
+                                                <input
+                                                    type="number"
+                                                    id="travelAllowance"
+                                                    value={taxData.travelAllowance}
+                                                    onChange={(e) => setTaxData({ ...taxData, travelAllowance: e.target.value })}
+                                                    className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
+                                                    placeholder="Enter travel allowance"
+                                                    aria-label="Travel allowance amount in ZAR"
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="mb-4">
                                         <label htmlFor="housingAllowance" className="block text-gray-600 dark:text-light-gray mb-2">Housing Allowance (ZAR)</label>
@@ -343,7 +348,7 @@
                                             type="number"
                                             id="housingAllowance"
                                             value={taxData.housingAllowance}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { housingAllowance: e.target.value })); }}
+                                            onChange={(e) => setTaxData({ ...taxData, housingAllowance: e.target.value })}
                                             className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
                                             placeholder="Enter housing allowance"
                                             aria-label="Housing allowance in ZAR"
@@ -355,7 +360,7 @@
                                             type="number"
                                             id="employerMedical"
                                             value={taxData.employerMedical}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { employerMedical: e.target.value })); }}
+                                            onChange={(e) => setTaxData({ ...taxData, employerMedical: e.target.value })}
                                             className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
                                             placeholder="Enter employer contribution"
                                             aria-label="Employer medical aid contribution in ZAR"
@@ -367,49 +372,98 @@
                                             type="number"
                                             id="otherIncome"
                                             value={taxData.otherIncome}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { otherIncome: e.target.value })); }}
+                                            onChange={(e) => setTaxData({ ...taxData, otherIncome: e.target.value })}
                                             className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
                                             placeholder="Enter other income"
                                             aria-label="Other income in ZAR"
                                         />
                                     </div>
-                                    {/* Deductions & Expenses */}
                                     <h3 className="text-lg font-semibold text-gold mb-2 mt-6">Deductions & Expenses</h3>
                                     <div className="mb-4">
-                                        <label htmlFor="pension" className="block text-gray-600 dark:text-light-gray mb-2">Pension Contributions (ZAR)</label>
-                                        <input
-                                            type="number"
-                                            id="pension"
-                                            value={taxData.pension}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { pension: e.target.value })); }}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter pension contributions"
-                                            aria-label="Pension contributions in ZAR"
-                                        />
+                                        <label className="block text-gray-600 dark:text-light-gray mb-2">Does your salary include contributions to a pension, provident fund, or RAF?</label>
+                                        <div className="flex space-x-4">
+                                            <label className="flex items-center text-gray-600 dark:text-light-gray">
+                                                <input
+                                                    type="radio"
+                                                    name="hasSalaryContributions"
+                                                    value="yes"
+                                                    checked={taxData.hasSalaryContributions === 'yes'}
+                                                    onChange={(e) => setTaxData({ ...taxData, hasSalaryContributions: e.target.value })}
+                                                    className="mr-2"
+                                                    aria-label="Salary contributions yes"
+                                                />
+                                                Yes
+                                            </label>
+                                            <label className="flex items-center text-gray-600 dark:text-light-gray">
+                                                <input
+                                                    type="radio"
+                                                    name="hasSalaryContributions"
+                                                    value="no"
+                                                    checked={taxData.hasSalaryContributions === 'no'}
+                                                    onChange={(e) => setTaxData({ ...taxData, hasSalaryContributions: e.target.value, salaryContributions: '' })}
+                                                    className="mr-2"
+                                                    aria-label="Salary contributions no"
+                                                />
+                                                No
+                                            </label>
+                                        </div>
+                                        {taxData.hasSalaryContributions === 'yes' && (
+                                            <div className="mt-2">
+                                                <label htmlFor="salaryContributions" className="block text-gray-600 dark:text-light-gray mb-2">Please enter the total amount (ZAR)</label>
+                                                <input
+                                                    type="number"
+                                                    id="salaryContributions"
+                                                    value={taxData.salaryContributions}
+                                                    onChange={(e) => setTaxData({ ...taxData, salaryContributions: e.target.value })}
+                                                    className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
+                                                    placeholder="Enter total contributions"
+                                                    aria-label="Salary contributions amount in ZAR"
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="mb-4">
-                                        <label htmlFor="provident" className="block text-gray-600 dark:text-light-gray mb-2">Provident Fund Contributions (ZAR)</label>
-                                        <input
-                                            type="number"
-                                            id="provident"
-                                            value={taxData.provident}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { provident: e.target.value })); }}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter provident contributions"
-                                            aria-label="Provident fund contributions in ZAR"
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="retirementAnnuity" className="block text-gray-600 dark:text-light-gray mb-2">Retirement Annuity Contributions (ZAR)</label>
-                                        <input
-                                            type="number"
-                                            id="retirementAnnuity"
-                                            value={taxData.retirementAnnuity}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { retirementAnnuity: e.target.value })); }}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter retirement annuity contributions"
-                                            aria-label="Retirement annuity contributions in ZAR"
-                                        />
+                                        <label className="block text-gray-600 dark:text-light-gray mb-2">Do you pay private contributions to a pension, provident fund, or RAF?</label>
+                                        <div className="flex space-x-4">
+                                            <label className="flex items-center text-gray-600 dark:text-light-gray">
+                                                <input
+                                                    type="radio"
+                                                    name="hasPrivateContributions"
+                                                    value="yes"
+                                                    checked={taxData.hasPrivateContributions === 'yes'}
+                                                    onChange={(e) => setTaxData({ ...taxData, hasPrivateContributions: e.target.value })}
+                                                    className="mr-2"
+                                                    aria-label="Private contributions yes"
+                                                />
+                                                Yes
+                                            </label>
+                                            <label className="flex items-center text-gray-600 dark:text-light-gray">
+                                                <input
+                                                    type="radio"
+                                                    name="hasPrivateContributions"
+                                                    value="no"
+                                                    checked={taxData.hasPrivateContributions === 'no'}
+                                                    onChange={(e) => setTaxData({ ...taxData, hasPrivateContributions: e.target.value, privateContributions: '' })}
+                                                    className="mr-2"
+                                                    aria-label="Private contributions no"
+                                                />
+                                                No
+                                            </label>
+                                        </div>
+                                        {taxData.hasPrivateContributions === 'yes' && (
+                                            <div className="mt-2">
+                                                <label htmlFor="privateContributions" className="block text-gray-600 dark:text-light-gray mb-2">Please enter the total amount (ZAR)</label>
+                                                <input
+                                                    type="number"
+                                                    id="privateContributions"
+                                                    value={taxData.privateContributions}
+                                                    onChange={(e) => setTaxData({ ...taxData, privateContributions: e.target.value })}
+                                                    className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
+                                                    placeholder="Enter total contributions"
+                                                    aria-label="Private contributions amount in ZAR"
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="mb-4">
                                         <label htmlFor="dependents" className="block text-gray-600 dark:text-light-gray mb-2">Number of Medical Aid Dependents</label>
@@ -417,7 +471,7 @@
                                             type="number"
                                             id="dependents"
                                             value={taxData.dependents}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { dependents: e.target.value })); }}
+                                            onChange={(e) => setTaxData({ ...taxData, dependents: e.target.value })}
                                             className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
                                             placeholder="Enter number of dependents"
                                             aria-label="Number of medical aid dependents"
@@ -429,7 +483,7 @@
                                             type="number"
                                             id="employeeMedical"
                                             value={taxData.employeeMedical}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { employeeMedical: e.target.value })); }}
+                                            onChange={(e) => setTaxData({ ...taxData, employeeMedical: e.target.value })}
                                             className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
                                             placeholder="Enter your contribution"
                                             aria-label="Employee medical aid contribution in ZAR"
@@ -441,7 +495,7 @@
                                             type="number"
                                             id="medicalExpenses"
                                             value={taxData.medicalExpenses}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { medicalExpenses: e.target.value })); }}
+                                            onChange={(e) => setTaxData({ ...taxData, medicalExpenses: e.target.value })}
                                             className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
                                             placeholder="Enter medical expenses"
                                             aria-label="Out-of-pocket medical expenses in ZAR"
@@ -453,7 +507,7 @@
                                             type="number"
                                             id="donations"
                                             value={taxData.donations}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { donations: e.target.value })); }}
+                                            onChange={(e) => setTaxData({ ...taxData, donations: e.target.value })}
                                             className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
                                             placeholder="Enter donations"
                                             aria-label="Donations to PBOs in ZAR"
@@ -464,7 +518,7 @@
                                         <select
                                             id="ageRange"
                                             value={taxData.ageRange}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { ageRange: e.target.value })); }}
+                                            onChange={(e) => setTaxData({ ...taxData, ageRange: e.target.value })}
                                             className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
                                             aria-label="Select your age range"
                                         >
@@ -478,26 +532,53 @@
                                             <input
                                                 type="checkbox"
                                                 checked={taxData.workFromHome}
-                                                onChange={function(e) { setTaxData(Object.assign({}, taxData, { workFromHome: e.target.checked })); }}
+                                                onChange={(e) => setTaxData({ ...taxData, workFromHome: e.target.checked, homeOfficeDeductionAmount: e.target.checked ? taxData.homeOfficeDeductionAmount : '' })}
                                                 className="mr-2"
                                                 aria-label="I work from home"
                                             />
                                             I work from home
                                         </label>
+                                        {taxData.workFromHome && (
+                                            <div className="mt-2">
+                                                <label htmlFor="homeOfficeDeductionAmount" className="block text-gray-600 dark:text-light-gray mb-2">Enter home office deduction amount (ZAR)</label>
+                                                <input
+                                                    type="number"
+                                                    id="homeOfficeDeductionAmount"
+                                                    value={taxData.homeOfficeDeductionAmount}
+                                                    onChange={(e) => setTaxData({ ...taxData, homeOfficeDeductionAmount: e.target.value })}
+                                                    className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
+                                                    placeholder="Enter deduction amount"
+                                                    aria-label="Home office deduction amount in ZAR"
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="mb-4">
                                         <label className="flex items-center text-gray-600 dark:text-light-gray">
                                             <input
                                                 type="checkbox"
                                                 checked={taxData.claimTravel}
-                                                onChange={function(e) { setTaxData(Object.assign({}, taxData, { claimTravel: e.target.checked })); }}
+                                                onChange={(e) => setTaxData({ ...taxData, claimTravel: e.target.checked, travelDeductionAmount: e.target.checked ? taxData.travelDeductionAmount : '' })}
                                                 className="mr-2"
                                                 aria-label="I want to claim travel expenses"
                                             />
                                             I want to claim travel expenses
                                         </label>
+                                        {taxData.claimTravel && (
+                                            <div className="mt-2">
+                                                <label htmlFor="travelDeductionAmount" className="block text-gray-600 dark:text-light-gray mb-2">Enter travel expense deduction amount (ZAR)</label>
+                                                <input
+                                                    type="number"
+                                                    id="travelDeductionAmount"
+                                                    value={taxData.travelDeductionAmount}
+                                                    onChange={(e) => setTaxData({ ...taxData, travelDeductionAmount: e.target.value })}
+                                                    className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
+                                                    placeholder="Enter deduction amount"
+                                                    aria-label="Travel expense deduction amount in ZAR"
+                                                />
+                                            </div>
+                                        )}
                                     </div>
-                                    {/* Capital Gains Tax Estimator */}
                                     <h3 className="text-lg font-semibold text-gold mb-2 mt-6">Capital Gains Tax Estimator</h3>
                                     <div className="mb-4">
                                         <label htmlFor="purchasePrice" className="block text-gray-600 dark:text-light-gray mb-2">Purchase Price (ZAR)</label>
@@ -505,7 +586,7 @@
                                             type="number"
                                             id="purchasePrice"
                                             value={taxData.purchasePrice}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { purchasePrice: e.target.value })); }}
+                                            onChange={(e) => setTaxData({ ...taxData, purchasePrice: e.target.value })}
                                             className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
                                             placeholder="Enter purchase price"
                                             aria-label="Purchase price in ZAR"
@@ -517,7 +598,7 @@
                                             type="number"
                                             id="sellingPrice"
                                             value={taxData.sellingPrice}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { sellingPrice: e.target.value })); }}
+                                            onChange={(e) => setTaxData({ ...taxData, sellingPrice: e.target.value })}
                                             className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
                                             placeholder="Enter selling price"
                                             aria-label="Selling price in ZAR"
@@ -529,7 +610,7 @@
                                             type="number"
                                             id="allowableExpenses"
                                             value={taxData.allowableExpenses}
-                                            onChange={function(e) { setTaxData(Object.assign({}, taxData, { allowableExpenses: e.target.value })); }}
+                                            onChange={(e) => setTaxData({ ...taxData, allowableExpenses: e.target.value })}
                                             className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
                                             placeholder="Enter allowable expenses"
                                             aria-label="Allowable expenses in ZAR"
@@ -543,10 +624,7 @@
                                         Calculate Tax
                                     </button>
                                 </div>
-                            )}
-
-                            {/* Results */}
-                            {showResults && (
+                            ) : (
                                 <div>
                                     <h2 className="text-2xl font-semibold text-gold mb-4">Your Tax Breakdown</h2>
                                     <div className="mb-6">
@@ -578,7 +656,7 @@
                                         <p><strong>Tip:</strong> Maximize deductions like retirement contributions (up to 27.5%, max R350,000) and donations (up to 10%). Verify results with SARS for accuracy.</p>
                                     </div>
                                     <button
-                                        onClick={function() { setShowResults(false); }}
+                                        onClick={() => setShowResults(false)}
                                         className="w-full px-4 py-2 bg-gray-300 dark:bg-charcoal rounded hover:bg-gold hover:text-white"
                                         aria-label="Edit inputs"
                                     >
