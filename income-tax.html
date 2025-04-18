@@ -12,6 +12,8 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -40,6 +42,7 @@
         body.dark .text-gray-800 { color: #E0E0E0; }
         body.dark .bg-white { background-color: #333333; }
         body.dark .text-deep-purple { color: #FFD700; }
+        body.dark canvas { background-color: #333333; }
         /* Hover Effects */
         .hover\:text-gold:hover { color: #FFD700; }
         .hover\:bg-gold:hover { background-color: #FFD700; color: #FFFFFF; }
@@ -85,6 +88,9 @@
             var showResults = showResultsState[0];
             var setShowResults = showResultsState[1];
 
+            var chartRef = React.useRef(null);
+            var chartInstance = React.useRef(null);
+
             useEffect(function() {
                 if (darkMode) {
                     document.body.classList.add('dark');
@@ -92,6 +98,84 @@
                     document.body.classList.remove('dark');
                 }
             }, [darkMode]);
+
+            useEffect(function() {
+                if (showResults && chartRef.current) {
+                    if (chartInstance.current) {
+                        chartInstance.current.destroy();
+                    }
+                    var ctx = chartRef.current.getContext('2d');
+                    chartInstance.current = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: [
+                                'Total Income',
+                                'Taxable Income',
+                                'Tax Before Rebates',
+                                'Rebates',
+                                'Medical Credits',
+                                showResults.homeOfficeDeduction > 0 ? 'Home Office Deduction' : null,
+                                showResults.travelDeduction > 0 ? 'Travel Deduction' : null,
+                                showResults.taxableCapitalGain > 0 ? 'Capital Gains Tax' : null,
+                                'Final Tax'
+                            ].filter(label => label),
+                            datasets: [{
+                                label: 'Tax Breakdown (ZAR)',
+                                data: [
+                                    showResults.totalIncome,
+                                    showResults.taxableIncome,
+                                    showResults.taxBeforeRebates,
+                                    showResults.totalRebate,
+                                    showResults.medicalCredit,
+                                    showResults.homeOfficeDeduction > 0 ? showResults.homeOfficeDeduction : null,
+                                    showResults.travelDeduction > 0 ? showResults.travelDeduction : null,
+                                    showResults.taxableCapitalGain > 0 ? showResults.capitalGainsTax : null,
+                                    showResults.finalTax
+                                ].filter(data => data !== null),
+                                backgroundColor: [
+                                    '#808080', // Income (gray)
+                                    '#808080', // Taxable Income
+                                    '#4A148C', // Tax Before (Deep Purple)
+                                    '#FFD700', // Rebates (Gold)
+                                    '#2E7D32', // Credits (Green)
+                                    '#2E7D32', // Home Office
+                                    '#2E7D32', // Travel
+                                    '#4A148C', // Capital Gains
+                                    '#4A148C'  // Final Tax
+                                ].slice(0, showResults.taxableCapitalGain > 0 ? 9 : showResults.homeOfficeDeduction > 0 || showResults.travelDeduction > 0 ? 7 : 5)
+                            }]
+                        },
+                        options: {
+                            indexAxis: 'y',
+                            scales: {
+                                x: {
+                                    beginAtZero: true,
+                                    title: { display: true, text: 'Amount (ZAR)', color: darkMode ? '#E0E0E0' : '#000000' },
+                                    ticks: { color: darkMode ? '#E0E0E0' : '#000000' }
+                                },
+                                y: {
+                                    ticks: { color: darkMode ? '#E0E0E0' : '#000000' }
+                                }
+                            },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return context.dataset.label + ': R ' + context.parsed.x.toFixed(2);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+                return function() {
+                    if (chartInstance.current) {
+                        chartInstance.current.destroy();
+                    }
+                };
+            }, [showResults, darkMode]);
 
             function calculateTax() {
                 // Income
@@ -113,8 +197,8 @@
                 var retirementTotal = pension + provident + retirementAnnuity;
                 var maxRetirementDeduction = Math.min(retirementTotal, totalIncome * 0.275, 350000);
                 var maxDonationsDeduction = Math.min(donations, totalIncome * 0.1);
-                var homeOfficeDeduction = workFromHome ? totalIncome * 0.1 : 0; // Placeholder
-                var travelDeduction = claimTravel ? totalIncome * 0.05 : 0; // Placeholder
+                var homeOfficeDeduction = workFromHome ? totalIncome * 0.1 : 0; // 10% placeholder
+                var travelDeduction = claimTravel ? totalIncome * 0.05 : 0; // 5% placeholder
 
                 // Capital Gains
                 var purchasePrice = parseFloat(taxData.purchasePrice) || 0;
@@ -158,8 +242,7 @@
                 } else if (dependents === 1) {
                     medicalCredit = 364 * 12;
                 }
-                // Add employee and out-of-pocket expenses as credits (simplified)
-                medicalCredit += employeeMedical + medicalExpenses;
+                medicalCredit += employeeMedical + medicalExpenses; // Simplified
 
                 // Final Tax
                 var taxBeforeRebates = tax;
@@ -180,6 +263,7 @@
 
                 setShowResults({
                     totalIncome: totalIncome,
+                    taxableNamibianIncome: taxableNamibianIncome,
                     taxableIncome: taxableIncome,
                     taxBeforeRebates: taxBeforeRebates,
                     totalRebate: totalRebate,
@@ -188,7 +272,9 @@
                     capitalGainsTax: capitalGainsTax,
                     effectiveTaxRate: effectiveTaxRate,
                     threshold: threshold,
-                    taxableCapitalGain: taxableCapitalGain
+                    taxableCapitalGain: taxableCapitalGain,
+                    homeOfficeDeduction: homeOfficeDeduction,
+                    travelDeduction: travelDeduction
                 });
             }
 
@@ -467,6 +553,8 @@
                                         <h3 className="text-lg font-semibold text-gold mb-2">Summary</h3>
                                         <p className="text-gray-600 dark:text-light-gray">Total Income: R {showResults.totalIncome.toFixed(2)}</p>
                                         <p className="text-gray-600 dark:text-light-gray">Taxable Income: R {showResults.taxableIncome.toFixed(2)}</p>
+                                        <p className="text-gray-600 dark:text-light-gray">Home Office Deduction: R {showResults.homeOfficeDeduction.toFixed(2)}</p>
+                                        <p className="text-gray-600 dark:text-light-gray">Travel Expense Deduction: R {showResults.travelDeduction.toFixed(2)}</p>
                                         <p className="text-gray-600 dark:text-light-gray">Tax Before Rebates: R {showResults.taxBeforeRebates.toFixed(2)}</p>
                                         <p className="text-gray-600 dark:text-light-gray">Total Rebates: R {showResults.totalRebate.toFixed(2)}</p>
                                         <p className="text-gray-600 dark:text-light-gray">Medical Tax Credits: R {showResults.medicalCredit.toFixed(2)}</p>
@@ -478,6 +566,13 @@
                                         <p className="text-sm text-gray-600 dark:text-light-gray mt-2">
                                             Note: No tax is owed if your income is below R {showResults.threshold.toLocaleString()} based on your age range.
                                         </p>
+                                        <p className="text-sm text-gray-600 dark:text-light-gray mt-2">
+                                            Home office and travel deductions are estimates. Verify with SARS for specific rules (e.g., home office expenses, travel logbook).
+                                        </p>
+                                    </div>
+                                    <div className="mb-6">
+                                        <h3 className="text-lg font-semibold text-gold mb-2">Tax Breakdown Visualization</h3>
+                                        <canvas ref={chartRef} className="w-full"></canvas>
                                     </div>
                                     <div className="mb-6 text-sm text-gray-600 dark:text-light-gray">
                                         <p><strong>Tip:</strong> Maximize deductions like retirement contributions (up to 27.5%, max R350,000) and donations (up to 10%). Verify results with SARS for accuracy.</p>
