@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MzansiMoney - Home</title>
+    <title>MzansiMoney - Financial Tools for South Africans</title>
     <!-- TailwindCSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-    <!-- React CDNs for Dark Mode Toggle -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!-- React CDNs -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.4/babel.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -19,7 +19,6 @@
         h1, h2, h3 {
             font-family: 'Poppins', sans-serif;
         }
-        /* Custom Colors */
         .bg-deep-purple { background-color: #4A148C; }
         .text-deep-purple { color: #4A148C; }
         .bg-gold { background-color: #FFD700; }
@@ -30,59 +29,59 @@
         .bg-charcoal { background-color: #212121; }
         .bg-charcoal-light { background-color: #333333; }
         .text-light-gray { color: #E0E0E0; }
-        /* Light Mode */
         body { background-color: #F5F5F5; }
-        /* Dark Mode */
         body.dark {
             background-color: #212121;
         }
         body.dark .text-gray-600 { color: #E0E0E0; }
         body.dark .text-gray-800 { color: #E0E0E0; }
         body.dark .bg-white { background-color: #333333; }
-        body.dark .text-deep-purple { color: #FFD700; } /* Gold in dark mode for headings */
-        /* Hover Effects */
+        body.dark .text-deep-purple { color: #FFD700; }
         .hover\:text-gold:hover { color: #FFD700; }
         .hover\:bg-gold:hover { background-color: #FFD700; color: #FFFFFF; }
+        a.text-green:hover { color: #FFD700; }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        var _React = React;
-        var useState = _React.useState;
-        var useEffect = _React.useEffect;
+        const { useState, useEffect } = React;
 
         function HomePage() {
-            var darkModeState = useState(true); // Default to dark mode
-            var darkMode = darkModeState[0];
-            var setDarkMode = darkModeState[1];
+            const [darkMode, setDarkMode] = useState(true);
+            const [menuOpen, setMenuOpen] = useState(false);
 
-            useEffect(function() {
-                if (darkMode) {
-                    document.body.classList.add('dark');
-                } else {
-                    document.body.classList.remove('dark');
-                }
+            useEffect(() => {
+                document.body.classList.toggle('dark', darkMode);
             }, [darkMode]);
 
             return (
                 <div className="min-h-screen">
-                    {/* Header */}
                     <header className="sticky top-0 z-50 bg-deep-purple shadow-md">
                         <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
                             <div className="text-2xl font-bold text-white">
                                 <a href="/index.html">MzansiMoney</a>
                             </div>
-                            <div className="space-x-6 flex items-center">
-                                <a href="/index.html#home" className="text-gold hover:text-white">Home</a>
-                                <a href="/income-tax.html" className="text-gold hover:text-white">Tax Calculator</a>
-                                <a href="/budget-planner.html" className="text-gold hover:text-white">Budget Planner</a>
-                                <a href="/vat-calculator.html" className="text-gold hover:text-white">VAT Calculator</a>
-                                <a href="/articles.html" className="text-gold hover:text-white">Articles</a>
+                            <div className="md:hidden">
                                 <button
-                                    onClick={function() { setDarkMode(!darkMode); }}
-                                    className="p-2 rounded-full bg-gray-200 dark:bg-charcoal text-deep-purple dark:text-gold"
+                                    onClick={() => setMenuOpen(!menuOpen)}
+                                    className="text-gold focus:outline-none"
+                                    aria-label="Toggle menu"
+                                >
+                                    {menuOpen ? '✖' : '☰'}
+                                </button>
+                            </div>
+                            <div className={`md:flex md:space-x-6 items-center ${menuOpen ? 'flex flex-col absolute top-16 left-0 w-full bg-deep-purple' : 'hidden md:flex'}`}>
+                                <a href="/index.html#home" className="text-gold hover:text-white py-2 md:py-0">Home</a>
+                                <a href="/income-tax.html" className="text-gold hover:text-white py-2 md:py-0">Tax Calculator</a>
+                                <a href="/budget-planner.html" className="text-gold hover:text-white py-2 md:py-0">Budget Planner</a>
+                                <a href="/vat-calculator.html" className="text-gold hover:text-white py-2 md:py-0">VAT Calculator</a>
+                                <a href="/articles.html" className="text-gold hover:text-white py-2 md:py-0">Articles</a>
+                                <a href="/privacy.html" className="text-gold hover:text-white py-2 md-py-0">Privacy Policy</a>
+                                <button
+                                    onClick={() => setDarkMode(!darkMode)}
+                                    className="p-2 rounded-full bg-gray-200 dark:bg-charcoal text-deep-purple dark:text-gold md:ml-4"
                                     aria-label="Toggle dark mode"
                                 >
                                     {darkMode ? '☀️' : '🌙'}
@@ -90,65 +89,34 @@
                             </div>
                         </nav>
                     </header>
-
-                    {/* Main Content */}
-                    <div className="container mx-auto px-4 py-16">
-                        {/* Hero Section */}
-                        <section id="home" className="text-center mb-16 py-16 rounded-lg border border-green">
-                            <h1 className="text-5xl font-bold text-deep-purple dark:text-gold mb-4">Master Your Money with MzansiMoney</h1>
-                            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">Free tools and resources to plan your taxes, budget, and more in South Africa.</p>
-                            <a href="/index.html#tools" className="inline-block px-8 py-4 bg-deep-purple text-white rounded-lg hover:bg-gold hover:text-white text-lg font-semibold">Get Started</a>
-                        </section>
-
-                        {/* Welcome Section */}
-                        <section className="mb-16">
-                            <h2 className="text-3xl font-bold text-gold mb-6 text-center">Welcome to MzansiMoney</h2>
-                            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                                Managing your finances in South Africa can feel overwhelming, with complex tax systems, rising costs, and the need to save for the future. At MzansiMoney, we’re here to simplify it all. Our mission is to empower every South African to take control of their money with easy-to-use, free tools designed for local needs. Whether you’re calculating your income tax with SARS, planning your monthly budget, or figuring out VAT for your small business, MzansiMoney provides accurate and accessible solutions. We believe financial freedom starts with knowledge, and we’re committed to helping you make informed decisions without the stress. Explore our tools and resources today to start your journey to smarter money management.
+                    <div className="container mx-auto px-4 md:px-8 py-16">
+                        <h1 className="text-3xl md:text-4xl font-bold text-gold mb-8 text-center">Welcome to MzansiMoney</h1>
+                        <div className="max-w-2xl mx-auto bg-white dark:bg-charcoal-light p-6 rounded-lg shadow-md">
+                            <h2 className="text-xl md:text-2xl font-semibold text-gold mb-4">Financial Tools for South Africans</h2>
+                            <p className="text-gray-600 dark:text-light-gray mb-4">
+                                MzansiMoney provides free, easy-to-use financial tools to help South Africans manage their money. Whether you need to calculate your income tax, plan your budget, or understand VAT, we’ve got you covered.
                             </p>
-                        </section>
-
-                        {/* Why MzansiMoney Section */}
-                        <section className="mb-16">
-                            <h2 className="text-3xl font-bold text-gold mb-8 text-center">Why Choose MzansiMoney?</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                                    <h3 className="text-xl font-semibold text-gold mb-2">Free Tools</h3>
-                                    <p className="text-gray-600">Access our tax calculator, budget planner, and VAT calculator at no cost, anytime.</p>
-                                </div>
-                                <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                                    <h3 className="text-xl font-semibold text-gold mb-2">Tailored for South Africans</h3>
-                                    <p className="text-gray-600">Built with local tax laws and financial challenges in mind, from SARS to everyday expenses.</p>
-                                </div>
-                                <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                                    <h3 className="text-xl font-semibold text-gold mb-2">Easy to Use</h3>
-                                    <p className="text-gray-600">No complicated jargon—just straightforward tools to help you plan with confidence.</p>
-                                </div>
+                            <div className="grid grid-cols-1 gap-4">
+                                <a href="/income-tax.html" className="block p-4 bg-deep-purple text-white rounded hover:bg-gold text-center">
+                                    TaxWise Navigator
+                                </a>
+                                <a href="/budget-planner.html" className="block p-4 bg-deep-purple text-white rounded hover:bg-gold text-center">
+                                    Budget Planner
+                                </a>
+                                <a href="/vat-calculator.html" className="block p-4 bg-deep-purple text-white rounded hover:bg-gold text-center">
+                                    VAT Calculator
+                                </a>
+                                <a href="/articles.html" className="block p-4 bg-deep-purple text-white rounded hover:bg-gold text-center">
+                                    Financial Articles
+                                </a>
                             </div>
-                        </section>
-
-                        {/* Tools Section */}
-                        <section id="tools" className="mb-16">
-                            <h2 className="text-3xl font-bold text-gold mb-8 text-center">Explore Our Financial Tools</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                <div className="bg-white p-6 rounded-lg shadow-md text-center border border-green">
-                                    <h3 className="text-xl font-semibold text-gold mb-2">TaxWise Navigator</h3>
-                                    <p className="text-gray-600 mb-4">Effortlessly calculate your personal income tax based on your earnings and deductions. Stay compliant with SARS and uncover potential savings with our detailed breakdown.</p>
-                                    <a href="/income-tax.html" className="text-green hover:text-gold">Try Now</a>
-                                </div>
-                                <div className="bg-white p-6 rounded-lg shadow-md text-center border border-green">
-                                    <h3 className="text-xl font-semibold text-gold mb-2">Budget Planner</h3>
-                                    <p className="text-gray-600 mb-4">Take charge of your finances by planning your monthly income and expenses. Visualize your spending with our interactive charts to save more effectively.</p>
-                                    <a href="/budget-planner.html" className="text-green hover:text-gold">Try Now</a>
-                                </div>
-                                <div className="bg-white p-6 rounded-lg shadow-md text-center border border-green">
-                                    <h3 className="text-xl font-semibold text-gold mb-2">VAT Calculator</h3>
-                                    <p className="text-gray-600 mb-4">Quickly compute VAT for your transactions, whether you’re a business owner or consumer. Supports both inclusive and exclusive VAT calculations at South Africa’s 15% rate.</p>
-                                    <a href="/vat-calculator.html" className="text-green hover:text-gold">Try Now</a>
-                                </div>
-                            </div>
-                        </section>
+                        </div>
                     </div>
+                    <footer className="bg-white dark:bg-charcoal-light py-4 text-center">
+                        <p className="text-gray-600 dark:text-light-gray text-sm">
+                            © 2025 MzansiMoney | All Rights Reserved | <a href="/privacy.html" className="text-green hover:text-gold">Privacy Policy</a>
+                        </p>
+                    </footer>
                 </div>
             );
         }
