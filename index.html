@@ -3,178 +3,919 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MzansiMoney - Home</title>
-    <!-- TailwindCSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>MzansiMoney - Your South African Financial Assistant</title>
+    <meta name="description" content="Free, user-friendly financial tools for South Africans. Calculate taxes, plan your budget, and understand VAT with our simple guided calculators.">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-    <!-- React CDNs for Dark Mode Toggle -->
-    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js" crossorigin></script>
-    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.4/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #046A38; /* South African green */
+            --secondary: #FFB612; /* South African gold */
+            --accent: #007749; /* Darker green */
+            --dark: #1E1E1E;
+            --light: #F5F7FA;
+            --white: #FFFFFF;
+            --text: #333333;
+            --text-light: #6B7280;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+        }
+        
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Open Sans', sans-serif;
+            color: var(--text);
+            background-color: var(--light);
+            line-height: 1.6;
         }
-        h1, h2, h3 {
-            font-family: 'Poppins', sans-serif;
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
         }
-        /* Custom Colors */
-        .bg-deep-purple { background-color: #4A148C; }
-        .text-deep-purple { color: #4A148C; }
-        .bg-gold { background-color: #FFD700; }
-        .text-gold { color: #FFD700; }
-        .bg-green { background-color: #2E7D32; }
-        .text-green { color: #2E7D32; }
-        .border-green { border-color: #2E7D32; }
-        .bg-charcoal { background-color: #212121; }
-        .bg-charcoal-light { background-color: #333333; }
-        .text-light-gray { color: #E0E0E0; }
-        /* Light Mode */
-        body { background-color: #F5F5F5; }
-        /* Dark Mode */
-        body.dark {
-            background-color: #212121;
+        
+        a {
+            text-decoration: none;
+            color: var(--primary);
+            transition: all 0.3s ease;
         }
-        body.dark .text-gray-600 { color: #E0E0E0; }
-        body.dark .text-gray-800 { color: #E0E0E0; }
-        body.dark .bg-white { background-color: #333333; }
-        body.dark .text-deep-purple { color: #FFD700; }
-        /* Hover Effects */
-        .hover\:text-gold:hover { color: #FFD700; }
-        .hover\:bg-gold:hover { background-color: #FFD700; color: #FFFFFF; }
-        a.text-green:hover { color: #FFD700; }
+        
+        a:hover {
+            color: var(--secondary);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background-image: url('/api/placeholder/500/500');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+        
+        .btn-primary:hover {
+            background-color: #ffcc5c;
+            transform: translateY(-3px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--white);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            height: 3px;
+            width: 60px;
+            background-color: var(--secondary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title p {
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            background-color: var(--primary);
+            color: var(--white);
+            font-size: 2.5rem;
+        }
+        
+        .feature-content {
+            padding: 1.5rem;
+        }
+        
+        .feature-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .feature-content p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Calculator Preview */
+        .calculator-preview {
+            padding: 5rem 0;
+            background-color: var(--white);
+        }
+        
+        .calculator-container {
+            background-color: var(--light);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .calculator-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .calculator-header i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-right: 1rem;
+        }
+        
+        .calculator-header h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .calculator-body {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .conversation-bubble {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .message {
+            background-color: var(--white);
+            padding: 1rem;
+            border-radius: 12px;
+            border-top-left-radius: 0;
+            max-width: 80%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .user-message .message {
+            background-color: #f0f7ff;
+            border-top-right-radius: 0;
+            border-top-left-radius: 12px;
+            margin-left: auto;
+        }
+        
+        .user-message {
+            flex-direction: row-reverse;
+        }
+        
+        .user-message .avatar {
+            background-color: #3b82f6;
+        }
+        
+        .input-group {
+            margin-top: 1.5rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 5rem 0;
+            background-color: #f8fafc;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial-card {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-size: 4rem;
+            color: var(--primary);
+            opacity: 0.1;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .testimonial-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .testimonial-content p {
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .author-info p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 0;
+        }
+        
+        /* CTA Section */
+        .cta {
+            padding: 5rem 0;
+            background-color: var(--primary);
+            color: var(--white);
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 3rem 0 1.5rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-column ul li a {
+            color: #f1f5f9;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.875rem;
+            color: #cbd5e1;
+        }
+        
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 99;
+            transition: all 0.3s ease;
+        }
+        
+        .dark-mode-toggle:hover {
+            transform: rotate(45deg);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+            
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--white);
+                padding: 1rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: all 0.3s ease;
+            }
+            
+            nav.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero::before {
+                width: 100%;
+                opacity: 0.1;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode header {
+            background-color: #1e1e1e;
+        }
+        
+        body.dark-mode .logo {
+            color: var(--secondary);
+        }
+        
+        body.dark-mode nav ul li a {
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .feature-card,
+        body.dark-mode .calculator-container,
+        body.dark-mode .testimonial-card {
+            background-color: #1e1e1e;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.dark-mode .section-title h2 {
+            color: var(--secondary);
+        }
+        
+        body.dark-mode .feature-content h3 {
+            color: var(--secondary);
+        }
+        
+        body.dark-mode .feature-content p,
+        body.dark-mode .testimonial-content p {
+            color: #bdbdbd;
+        }
+        
+        body.dark-mode .calculator-header h3 {
+            color: var(--secondary);
+        }
+        
+        body.dark-mode .message {
+            background-color: #2d2d2d;
+        }
+        
+        body.dark-mode .user-message .message {
+            background-color: #003366;
+        }
+        
+        body.dark-mode .input-group label {
+            color: var(--secondary);
+        }
+        
+        body.dark-mode .input-group input,
+        body.dark-mode .input-group select {
+            background-color: #2d2d2d;
+            border-color: #3d3d3d;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .testimonials {
+            background-color: #121212;
+        }
+        
+        body.dark-mode .dark-mode-toggle {
+            background-color: #121212;
+            color: var(--secondary);
+        }
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-hand-holding-dollar"></i>
+                    Mzansi<span>Money</span>
+                </a>
+                <button class="nav-toggle" id="navToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav id="mainNav">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="income-tax.html">Tax Calculator</a></li>
+                        <li><a href="budget-planner.html">Budget Planner</a></li>
+                        <li><a href="vat-calculator.html">VAT Calculator</a></li>
+                        <li><a href="articles.html">Financial Tips</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-    <script type="text/babel">
-        var _React = React;
-        var useState = _React.useState;
-        var useEffect = _React.useEffect;
-
-        function HomePage() {
-            var darkModeState = useState(true); // Default to dark mode
-            var darkMode = darkModeState[0];
-            var setDarkMode = darkModeState[1];
-            var menuOpenState = useState(false);
-            var menuOpen = menuOpenState[0];
-            var setMenuOpen = menuOpenState[1];
-
-            useEffect(function() {
-                if (darkMode) {
-                    document.body.classList.add('dark');
-                } else {
-                    document.body.classList.remove('dark');
-                }
-            }, [darkMode]);
-
-            return (
-                <div className="min-h-screen">
-                    {/* Header */}
-                    <header className="sticky top-0 z-50 bg-deep-purple shadow-md">
-                        <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-                            <div className="text-2xl font-bold text-white">
-                                <a href="/index.html">MzansiMoney</a>
-                            </div>
-                            <div className="md:hidden">
-                                <button
-                                    onClick={function() { setMenuOpen(!menuOpen); }}
-                                    className="text-gold focus:outline-none"
-                                    aria-label="Toggle menu"
-                                >
-                                    {menuOpen ? '✖' : '☰'}
-                                </button>
-                            </div>
-                            <div className={`md:flex md:space-x-6 items-center ${menuOpen ? 'flex flex-col absolute top-16 left-0 w-full bg-deep-purple' : 'hidden md:flex'}`}>
-                                <a href="/index.html#home" className="text-gold hover:text-white py-2 md:py-0">Home</a>
-                                <a href="/income-tax.html" className="text-gold hover:text-white py-2 md:py-0">Tax Calculator</a>
-                                <a href="/budget-planner.html" className="text-gold hover:text-white py-2 md:py-0">Budget Planner</a>
-                                <a href="/vat-calculator.html" className="text-gold hover:text-white py-2 md:py-0">VAT Calculator</a>
-                                <a href="/articles.html" className="text-gold hover:text-white py-2 md:py-0">Articles</a>
-                                <a href="/privacy.html" className="text-gold hover:text-white py-2 md:py-0">Privacy Policy</a>
-                                <button
-                                    onClick={function() { setDarkMode(!darkMode); }}
-                                    className="p-2 rounded-full bg-gray-200 dark:bg-charcoal text-deep-purple dark:text-gold md:ml-4"
-                                    aria-label="Toggle dark mode"
-                                >
-                                    {darkMode ? '☀️' : '🌙'}
-                                </button>
-                            </div>
-                        </nav>
-                    </header>
-
-                    {/* Main Content */}
-                    <div className="container mx-auto px-4 md:px-8 py-16">
-                        {/* Hero Section */}
-                        <section id="home" className="text-center mb-16 py-12 md:py-16 rounded-lg border border-green">
-                            <h1 className="text-4xl md:text-5xl font-bold text-deep-purple dark:text-gold mb-4">Master Your Money with MzansiMoney</h1>
-                            <p className="text-lg md:text-xl text-gray-600 dark:text-light-gray mb-8 max-w-2xl mx-auto">Free tools and resources to plan your taxes, budget, and more in South Africa.</p>
-                            <a href="/index.html#tools" className="inline-block px-6 py-3 md:px-8 md:py-4 bg-deep-purple text-white rounded-lg hover:bg-gold hover:text-white text-base md:text-lg font-semibold">Get Started</a>
-                        </section>
-
-                        {/* Welcome Section */}
-                        <section className="mb-16">
-                            <h2 className="text-2xl md:text-3xl font-bold text-gold mb-6 text-center">Welcome to MzansiMoney</h2>
-                            <p className="text-base md:text-lg text-gray-600 dark:text-light-gray max-w-3xl mx-auto leading-relaxed">
-                                Managing your finances in South Africa can feel overwhelming, with complex tax systems, rising costs, and the need to save for the future. At MzansiMoney, we’re here to simplify it all. Our mission is to empower every South African to take control of their money with easy-to-use, free tools designed for local needs. Whether you’re calculating your income tax with SARS, planning your monthly budget, or figuring out VAT for your small business, MzansiMoney provides accurate and accessible solutions. We believe financial freedom starts with knowledge, and we’re committed to helping you make informed decisions without the stress. Explore our tools and resources today to start your journey to smarter money management.
-                            </p>
-                        </section>
-
-                        {/* Why MzansiMoney Section */}
-                        <section className="mb-16">
-                            <h2 className="text-2xl md:text-3xl font-bold text-gold mb-8 text-center">Why Choose MzansiMoney?</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                                <div className="bg-white dark:bg-charcoal-light p-6 rounded-lg shadow-md text-center">
-                                    <h3 className="text-lg md:text-xl font-semibold text-gold mb-2">Free Tools</h3>
-                                    <p className="text-gray-600 dark:text-light-gray text-sm md:text-base">Access our tax calculator, budget planner, and VAT calculator at no cost, anytime.</p>
-                                </div>
-                                <div className="bg-white dark:bg-charcoal-light p-6 rounded-lg shadow-md text-center">
-                                    <h3 className="text-lg md:text-xl font-semibold text-gold mb-2">Tailored for South Africans</h3>
-                                    <p className="text-gray-600 dark:text-light-gray text-sm md:text-base">Built with local tax laws and financial challenges in mind, from SARS to everyday expenses.</p>
-                                </div>
-                                <div className="bg-white dark:bg-charcoal-light p-6 rounded-lg shadow-md text-center">
-                                    <h3 className="text-lg md:text-xl font-semibold text-gold mb-2">Easy to Use</h3>
-                                    <p className="text-gray-600 dark:text-light-gray text-sm md:text-base">No complicated jargon—just straightforward tools to help you plan with confidence.</p>
-                                </div>
-                            </div>
-                        </section>
-
-                        {/* Tools Section */}
-                        <section id="tools" className="mb-16">
-                            <h2 className="text-2xl md:text-3xl font-bold text-gold mb-8 text-center">Explore Our Financial Tools</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                                <div className="bg-white dark:bg-charcoal-light p-6 rounded-lg shadow-md text-center border border-green">
-                                    <h3 className="text-lg md:text-xl font-semibold text-gold mb-2">TaxWise Navigator</h3>
-                                    <p className="text-gray-600 dark:text-light-gray mb-4 text-sm md:text-base">Effortlessly calculate your personal income tax based on your earnings and deductions. Stay compliant with SARS and uncover potential savings with our detailed breakdown.</p>
-                                    <a href="/income-tax.html" className="text-green hover:text-gold">Try Now</a>
-                                </div>
-                                <div className="bg-white dark:bg-charcoal-light p-6 rounded-lg shadow-md text-center border border-green">
-                                    <h3 className="text-lg md:text-xl font-semibold text-gold mb-2">Budget Planner</h3>
-                                    <p className="text-gray-600 dark:text-light-gray mb-4 text-sm md:text-base">Take charge of your finances by planning your monthly income and expenses. Visualize your spending with our interactive charts to save more effectively.</p>
-                                    <a href="/budget-planner.html" className="text-green hover:text-gold">Try Now</a>
-                                </div>
-                                <div className="bg-white dark:bg-charcoal-light p-6 rounded-lg shadow-md text-center border border-green">
-                                    <h3 className="text-lg md:text-xl font-semibold text-gold mb-2">VAT Calculator</h3>
-                                    <p className="text-gray-600 dark:text-light-gray mb-4 text-sm md:text-base">Quickly compute VAT for your transactions, whether you’re a business owner or consumer. Supports both inclusive and exclusive VAT calculations at South Africa’s 15% rate.</p>
-                                    <a href="/vat-calculator.html" className="text-green hover:text-gold">Try Now</a>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-
-                    {/* Footer */}
-                    <footer className="bg-white dark:bg-charcoal-light py-4 text-center">
-                        <p className="text-gray-600 dark:text-light-gray text-sm">
-                            © 2025 MzansiMoney | All Rights Reserved | <a href="/privacy.html" className="text-green hover:text-gold">Privacy Policy</a>
-                        </p>
-                    </footer>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Financial Tools for South Africans, Made Simple</h1>
+                <p>Free, easy-to-use calculators to help you navigate taxes, budgeting, and financial planning in South Africa. No jargon, no complications.</p>
+                <div class="hero-buttons">
+                    <a href="#tools" class="btn btn-primary">Explore Our Tools</a>
+                    <a href="articles.html" class="btn btn-outline">Financial Tips</a>
                 </div>
-            );
-        }
+            </div>
+        </div>
+    </section>
 
-        ReactDOM.render(<HomePage />, document.getElementById('root'));
-    </script>
-</body>
-</html>
+    <section class="features" id="tools">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Financial Tools</h2>
+                <p>Simple, accurate, and designed specifically for South Africans</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>TaxWise Navigator</h3>
+                        <p>Calculate your income tax accurately using the latest SARS rates and thresholds. Discover potential tax deductions and plan your finances effectively.</p>
+                        <a href="income-tax.html" class="btn btn-primary">Calculate Tax</a>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Budget Planner</h3>
+                        <p>Create a personalized budget based on your income and expenses. Track your spending patterns and find areas where you can save more.</p>
+                        <a href="budget-planner.html" class="btn btn-primary">Plan Budget</a>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-percent"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>VAT Calculator</h3>
+                        <p>Quickly calculate VAT for your business transactions or personal purchases. Switch between inclusive and exclusive calculations at South Africa's 15% rate.</p>
+                        <a href="vat-calculator.html" class="btn btn-primary">Calculate VAT</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="calculator-preview">
+        <div class="container">
+            <div class="section-title">
+                <h2>Friendly, Conversation-Based Calculators</h2>
+                <p>Our tools guide you through financial calculations with simple questions</p>
+            </div>
+            <div class="calculator-container">
+                <div class="calculator-header">
+                    <i class="fas fa-user-tie"></i>
+                    <h3>Tax Calculator Preview</h3>
+                </div>
+                <div class="calculator-body">
+                    <div class="conversation-bubble">
+                        <div class="avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message">
+                            <p>Hi there! I'm your MzansiMoney tax assistant. I'll help you calculate your income tax for the 2024/2025 tax year. Let's start with your annual salary before deductions.</p>
+                        </div>
+                    </div>
+                    <div class="conversation-bubble user-message">
+                        <div class="avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="message">
+                            <p>R450,000</p>
+                        </div>
+                    </div>
+                    <div class="conversation-bubble">
+                        <div class="avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message">
+                            <p>Great! Do you contribute to a pension, provident fund, or retirement annuity?</p>
+                            <div class="input-group">
+                                <label for="pension">Monthly contribution amount (R)</label>
+                                <input type="number" id="pension" placeholder="e.g. 2500">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>What South Africans Say</h2>
+                <p>Don't just take our word for it - see what others think</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"MzansiMoney's tax calculator saved me hours of confusion when filing my return. It broke down everything in simple terms and showed me deductions I didn't know about!"</p>
+                        <div class="testimonial-author">
+                            <img src="/api/placeholder/50/50" alt="Testimonial Author">
+                            <div class="author-info">
+                                <h4>Thabo M.</h4>
+                                <p>Johannesburg</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"As a small business owner, the VAT calculator has been invaluable. It's quick, accurate, and helps me keep my finances in order without the need for expensive accounting software."</p>
+                        <div class="testimonial-author">
+                            <img src="/api/placeholder/50/50" alt="Testimonial Author">
+                            <div class="author-info">
+                                <h4>Nokuthula D.</h4>
+                                <p>Durban</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"The budget planner completely changed how I manage my money. For the first time, I can see exactly where my salary goes and I've been able to start saving consistently."</p>
+                        <div class="testimonial-author">
+                            <img src="/api/placeholder/50/50" alt="Testimonial Author">
+                            <div class="author-info">
+                                <h4>Michael S.</h4>
+                                <p>Cape Town</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>Take Control of Your Finances Today</h2>
+            <p>Our free tools are designed to help every South African make smarter financial decisions. No signup required.</p>
+            <a href="#tools" class="btn btn-primary">Get Started Now</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>MzansiMoney</h3>
+                    <p>Free financial tools designed specifically for South Africans. Simplifying tax, budgeting, and financial planning.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="income-tax.html">Tax Calculator</a></li>
+                        <li><a href="budget-planner.html">Budget Planner</a></li>
+                        <li><a href="vat-calculator.html">VAT Calculator</a></li>
+                        <li><a href="articles.html">Financial Tips</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">SARS Website</a></li>
+                        <li><a href="#">National Treasury</a></li>
+                        <li><a href="#">National Credit Regulator</a></li>
+                        <li><a href="#">Financial Sector Conduct Authority</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MzansiMoney. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="dark-mode-toggle" id="darkModeToggle">
+        <i
