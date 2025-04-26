@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MzansiMoney - Your South African Financial Assistant</title>
-    <meta name="description" content="Free, user-friendly financial tools for South Africans. Calculate taxes, plan your budget, and understand VAT with our simple guided calculators.">
+    <meta name="description" content="Free, user-friendly financial tools for South Africans. Calculate taxes, plan your budget, and understand VAT with our reliable calculators.">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <!-- Favicon -->
@@ -14,6 +14,7 @@
     <style>
         :root {
             --primary: #046A38; /* South African green */
+            --primary-light: #0b8949;
             --secondary: #FFB612; /* South African gold */
             --accent: #007749; /* Darker green */
             --dark: #1E1E1E;
@@ -22,7 +23,7 @@
             --text: #333333;
             --text-light: #6B7280;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --radius: 12px;
+            --radius: 8px;
         }
         
         /* Base Styles */
@@ -187,6 +188,7 @@
             font-weight: 600;
             text-align: center;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
         
         .btn-primary {
@@ -289,112 +291,118 @@
             margin-bottom: 1.5rem;
         }
         
-        /* Calculator Preview */
-        .calculator-preview {
+        /* Popular Tools Section */
+        .popular-tools {
+            padding: 4rem 0;
+            background-color: #f8fafc;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .tool-box {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .tool-box:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tool-header {
+            padding: 1.5rem;
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .tool-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .tool-header h3 i {
+            font-size: 1.4rem;
+        }
+        
+        .tool-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tool-content p {
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        
+        .tool-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tool-features li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .tool-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        /* Benefits Section */
+        .benefits {
             padding: 5rem 0;
             background-color: var(--white);
         }
         
-        .calculator-container {
-            background-color: var(--light);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 2rem;
-            max-width: 800px;
-            margin: 0 auto;
+        .benefits-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
         }
         
-        .calculator-header {
+        .benefit-item {
             display: flex;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        
-        .calculator-header i {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-right: 1rem;
-        }
-        
-        .calculator-header h3 {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-        
-        .calculator-body {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        
-        .conversation-bubble {
-            display: flex;
-            align-items: flex-start;
             gap: 1rem;
         }
         
-        .avatar {
-            width: 40px;
-            height: 40px;
+        .benefit-icon {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(4, 106, 56, 0.1);
             border-radius: 50%;
-            background-color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .benefit-content h3 {
             font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-        
-        .message {
-            background-color: var(--white);
-            padding: 1rem;
-            border-radius: 12px;
-            border-top-left-radius: 0;
-            max-width: 80%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        
-        .user-message .message {
-            background-color: #f0f7ff;
-            border-top-right-radius: 0;
-            border-top-left-radius: 12px;
-            margin-left: auto;
-        }
-        
-        .user-message {
-            flex-direction: row-reverse;
-        }
-        
-        .user-message .avatar {
-            background-color: #3b82f6;
-        }
-        
-        .input-group {
-            margin-top: 1.5rem;
-        }
-        
-        .input-group label {
-            display: block;
             margin-bottom: 0.5rem;
-            font-weight: 600;
             color: var(--primary);
         }
         
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: var(--radius);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .input-group input:focus,
-        .input-group select:focus {
-            outline: none;
-            border-color: var(--primary);
+        .benefit-content p {
+            color: var(--text-light);
         }
         
         /* Testimonials */
@@ -463,6 +471,53 @@
             margin-bottom: 0;
         }
         
+        /* Quick Start Section */
+        .quick-start {
+            padding: 5rem 0;
+            background-color: var(--white);
+        }
+        
+        .quick-start-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .quick-start-card {
+            background-color: var(--light);
+            border-radius: var(--radius);
+            padding: 2rem;
+            border-left: 4px solid var(--primary);
+            box-shadow: var(--shadow);
+        }
+        
+        .quick-start-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .quick-start-card h3 span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background-color: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            font-size: 1rem;
+        }
+        
+        .quick-start-card p {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+        
         /* CTA Section */
         .cta {
             padding: 5rem 0;
@@ -523,6 +578,7 @@
         .social-links {
             display: flex;
             gap: 1rem;
+            margin-top: 1.5rem;
         }
         
         .social-links a {
@@ -620,6 +676,19 @@
             }
         }
         
+        /* Tax Year Badge */
+        .tax-year-badge {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--dark);
+            font-weight: bold;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-left: 1rem;
+            vertical-align: middle;
+        }
+        
         /* Dark Mode Styles */
         body.dark-mode {
             background-color: #121212;
@@ -639,7 +708,8 @@
         }
         
         body.dark-mode .feature-card,
-        body.dark-mode .calculator-container,
+        body.dark-mode .tool-box,
+        body.dark-mode .quick-start-card,
         body.dark-mode .testimonial-card {
             background-color: #1e1e1e;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
@@ -649,40 +719,37 @@
             color: var(--secondary);
         }
         
-        body.dark-mode .feature-content h3 {
+        body.dark-mode .feature-content h3,
+        body.dark-mode .benefit-content h3,
+        body.dark-mode .quick-start-card h3 {
             color: var(--secondary);
         }
         
         body.dark-mode .feature-content p,
-        body.dark-mode .testimonial-content p {
+        body.dark-mode .tool-content p,
+        body.dark-mode .testimonial-content p,
+        body.dark-mode .benefit-content p,
+        body.dark-mode .quick-start-card p {
             color: #bdbdbd;
         }
         
-        body.dark-mode .calculator-header h3 {
+        body.dark-mode .tool-features li::before {
             color: var(--secondary);
         }
         
-        body.dark-mode .message {
-            background-color: #2d2d2d;
-        }
-        
-        body.dark-mode .user-message .message {
-            background-color: #003366;
-        }
-        
-        body.dark-mode .input-group label {
-            color: var(--secondary);
-        }
-        
-        body.dark-mode .input-group input,
-        body.dark-mode .input-group select {
-            background-color: #2d2d2d;
-            border-color: #3d3d3d;
-            color: #e0e0e0;
-        }
-        
+        body.dark-mode .popular-tools,
         body.dark-mode .testimonials {
             background-color: #121212;
+        }
+        
+        body.dark-mode .benefits,
+        body.dark-mode .quick-start {
+            background-color: #1a1a1a;
+        }
+        
+        body.dark-mode .benefit-icon {
+            background-color: rgba(255, 182, 18, 0.1);
+            color: var(--secondary);
         }
         
         body.dark-mode .dark-mode-toggle {
@@ -719,252 +786,165 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Financial Tools for South Africans, Made Simple</h1>
-                <p>Free, easy-to-use calculators to help you navigate taxes, budgeting, and financial planning in South Africa. No jargon, no complications.</p>
+                <h1>Simple Financial Tools for South Africans</h1>
+                <p>Free, professional calculators to help you navigate taxes, budgeting, and financial planning in South Africa. Up-to-date with the latest SARS rates and regulations.</p>
                 <div class="hero-buttons">
-                    <a href="#tools" class="btn btn-primary">Explore Our Tools</a>
-                    <a href="articles.html" class="btn btn-outline">Financial Tips</a>
+                    <a href="income-tax.html" class="btn btn-primary">Calculate Your Tax <span class="tax-year-badge">2024/2025</span></a>
+                    <a href="#tools" class="btn btn-outline">Explore All Tools</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="features" id="tools">
+    <section class="popular-tools" id="tools">
         <div class="container">
             <div class="section-title">
                 <h2>Our Financial Tools</h2>
-                <p>Simple, accurate, and designed specifically for South Africans</p>
+                <p>Accurate calculators designed specifically for South African tax laws and financial regulations</p>
             </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-calculator"></i>
+            <div class="tools-grid">
+                <div class="tool-box">
+                    <div class="tool-header">
+                        <h3><i class="fas fa-calculator"></i> Income Tax Calculator</h3>
                     </div>
-                    <div class="feature-content">
-                        <h3>TaxWise Navigator</h3>
-                        <p>Calculate your income tax accurately using the latest SARS rates and thresholds. Discover potential tax deductions and plan your finances effectively.</p>
+                    <div class="tool-content">
+                        <p>Calculate your personal income tax liability accurately using the latest SARS tax tables.</p>
+                        <ul class="tool-features">
+                            <li>Latest 2024/2025 tax rates</li>
+                            <li>Tax rebate calculations</li>
+                            <li>Medical aid tax credits</li>
+                            <li>Retirement contributions</li>
+                        </ul>
                         <a href="income-tax.html" class="btn btn-primary">Calculate Tax</a>
                     </div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-wallet"></i>
+                <div class="tool-box">
+                    <div class="tool-header">
+                        <h3><i class="fas fa-wallet"></i> Budget Planner</h3>
                     </div>
-                    <div class="feature-content">
-                        <h3>Budget Planner</h3>
-                        <p>Create a personalized budget based on your income and expenses. Track your spending patterns and find areas where you can save more.</p>
+                    <div class="tool-content">
+                        <p>Create a personalized budget based on your income and expenses with our simple planner.</p>
+                        <ul class="tool-features">
+                            <li>Expense categorization</li>
+                            <li>Savings goal calculator</li>
+                            <li>Monthly breakdown</li>
+                            <li>Expenditure analysis</li>
+                        </ul>
                         <a href="budget-planner.html" class="btn btn-primary">Plan Budget</a>
                     </div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-percent"></i>
+                <div class="tool-box">
+                    <div class="tool-header">
+                        <h3><i class="fas fa-percent"></i> VAT Calculator</h3>
                     </div>
-                    <div class="feature-content">
-                        <h3>VAT Calculator</h3>
-                        <p>Quickly calculate VAT for your business transactions or personal purchases. Switch between inclusive and exclusive calculations at South Africa's 15% rate.</p>
+                    <div class="tool-content">
+                        <p>Quickly calculate VAT for your business transactions or personal purchases at South Africa's 15% rate.</p>
+                        <ul class="tool-features">
+                            <li>Add/remove VAT calculations</li>
+                            <li>Bulk item processing</li>
+                            <li>VAT invoice summary</li>
+                            <li>Business expense analysis</li>
+                        </ul>
                         <a href="vat-calculator.html" class="btn btn-primary">Calculate VAT</a>
                     </div>
                 </div>
+                <div class="tool-box">
+                    <div class="tool-header">
+                        <h3><i class="fas fa-hand-holding-usd"></i> Loan Calculator</h3>
+                    </div>
+                    <div class="tool-content">
+                        <p>Plan your loans and understand the true cost of borrowing with our comprehensive calculator.</p>
+                        <ul class="tool-features">
+                            <li>Home loan repayments</li>
+                            <li>Vehicle finance</li>
+                            <li>Personal loans</li>
+                            <li>Early repayment benefits</li>
+                        </ul>
+                        <a href="loan-calculator.html" class="btn btn-primary">Calculate Loans</a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="calculator-preview">
+    <section class="benefits">
         <div class="container">
             <div class="section-title">
-                <h2>Friendly, Conversation-Based Calculators</h2>
-                <p>Our tools guide you through financial calculations with simple questions</p>
+                <h2>Why Use MzansiMoney?</h2>
+                <p>Our tools are built specifically for South Africans by financial experts</p>
             </div>
-            <div class="calculator-container">
-                <div class="calculator-header">
-                    <i class="fas fa-user-tie"></i>
-                    <h3>Tax Calculator Preview</h3>
+            <div class="benefits-container">
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Up-to-Date Tax Laws</h3>
+                        <p>Our calculators are always updated with the latest SARS regulations and tax tables to ensure accurate results.</p>
+                    </div>
                 </div>
-                <div class="calculator-body">
-                    <div class="conversation-bubble">
-                        <div class="avatar">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <div class="message">
-                            <p>Hi there! I'm your MzansiMoney tax assistant. I'll help you calculate your income tax for the 2024/2025 tax year. Let's start with your annual salary before deductions.</p>
-                        </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-lock"></i>
                     </div>
-                    <div class="conversation-bubble user-message">
-                        <div class="avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="message">
-                            <p>R450,000</p>
-                        </div>
+                    <div class="benefit-content">
+                        <h3>Complete Privacy</h3>
+                        <p>All calculations are done in your browser. We never store or share your personal financial data.</p>
                     </div>
-                    <div class="conversation-bubble">
-                        <div class="avatar">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <div class="message">
-                            <p>Great! Do you contribute to a pension, provident fund, or retirement annuity?</p>
-                            <div class="input-group">
-                                <label for="pension">Monthly contribution amount (R)</label>
-                                <input type="number" id="pension" placeholder="e.g. 2500">
-                            </div>
-                        </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Built for South Africans</h3>
+                        <p>Our tools are designed with the unique aspects of South African financial regulations in mind.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Fast and Simple</h3>
+                        <p>Get accurate results quickly without complicated forms or unnecessary information.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Data Visualization</h3>
+                        <p>Understand your financial position better with clear charts and easy-to-read reports.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Export Results</h3>
+                        <p>Save and download your calculations for record keeping or to share with your accountant.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="testimonials">
+    <section class="quick-start">
         <div class="container">
             <div class="section-title">
-                <h2>What South Africans Say</h2>
-                <p>Don't just take our word for it - see what others think</p>
+                <h2>Get Started in Minutes</h2>
+                <p>Our tools are designed to be straightforward and easy to use</p>
             </div>
-            <div class="testimonial-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p>"MzansiMoney's tax calculator saved me hours of confusion when filing my return. It broke down everything in simple terms and showed me deductions I didn't know about!"</p>
-                        <div class="testimonial-author">
-                            <img src="/api/placeholder/50/50" alt="Testimonial Author">
-                            <div class="author-info">
-                                <h4>Thabo M.</h4>
-                                <p>Johannesburg</p>
-                            </div>
-                        </div>
-                    </div>
+            <div class="quick-start-grid">
+                <div class="quick-start-card">
+                    <h3><span>1</span> Choose Your Tool</h3>
+                    <p>Select from our range of financial calculators based on what you need to accomplish.</p>
                 </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p>"As a small business owner, the VAT calculator has been invaluable. It's quick, accurate, and helps me keep my finances in order without the need for expensive accounting software."</p>
-                        <div class="testimonial-author">
-                            <img src="/api/placeholder/50/50" alt="Testimonial Author">
-                            <div class="author-info">
-                                <h4>Nokuthula D.</h4>
-                                <p>Durban</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="quick-start-card">
+                    <h3><span>2</span> Enter Your Information</h3>
+                    <p>Fill in the required fields with your financial details using our clear, professional forms.</p>
                 </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p>"The budget planner completely changed how I manage my money. For the first time, I can see exactly where my salary goes and I've been able to start saving consistently."</p>
-                        <div class="testimonial-author">
-                            <img src="/api/placeholder/50/50" alt="Testimonial Author">
-                            <div class="author-info">
-                                <h4>Michael S.</h4>
-                                <p>Cape Town</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta">
-        <div class="container">
-            <h2>Take Control of Your Finances Today</h2>
-            <p>Our free tools are designed to help every South African make smarter financial decisions. No signup required.</p>
-            <a href="#tools" class="btn btn-primary">Get Started Now</a>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>MzansiMoney</h3>
-                    <p>Free financial tools designed specifically for South Africans. Simplifying tax, budgeting, and financial planning.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="income-tax.html">Tax Calculator</a></li>
-                        <li><a href="budget-planner.html">Budget Planner</a></li>
-                        <li><a href="vat-calculator.html">VAT Calculator</a></li>
-                        <li><a href="articles.html">Financial Tips</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Resources</h3>
-                    <ul>
-                        <li><a href="#">SARS Website</a></li>
-                        <li><a href="#">National Treasury</a></li>
-                        <li><a href="#">National Credit Regulator</a></li>
-                        <li><a href="#">Financial Sector Conduct Authority</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Legal</h3>
-                    <ul>
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Use</a></li>
-                        <li><a href="#">Disclaimer</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 MzansiMoney. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <div class="dark-mode-toggle" id="darkModeToggle">
-        <i
-            <div class="dark-mode-toggle" id="darkModeToggle">
-        <i class="fas fa-moon"></i>
-    </div>
-
-    <script>
-        // Mobile Navigation Toggle
-        const navToggle = document.getElementById('navToggle');
-        const mainNav = document.getElementById('mainNav');
-        
-        navToggle.addEventListener('click', function() {
-            mainNav.classList.toggle('active');
-        });
-        
-        // Dark Mode Toggle
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const moonIcon = '<i class="fas fa-moon"></i>';
-        const sunIcon = '<i class="fas fa-sun"></i>';
-        
-        // Check for saved dark mode preference
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
-            darkModeToggle.innerHTML = sunIcon;
-        }
-        
-        darkModeToggle.addEventListener('click', function() {
-            if (document.body.classList.contains('dark-mode')) {
-                document.body.classList.remove('dark-mode');
-                darkModeToggle.innerHTML = moonIcon;
-                localStorage.setItem('darkMode', null);
-            } else {
-                document.body.classList.add('dark-mode');
-                darkModeToggle.innerHTML = sunIcon;
-                localStorage.setItem('darkMode', 'enabled');
-            }
-        });
-        
-        // Smooth Scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+                <div class="quick-start-car
