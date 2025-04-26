@@ -3,679 +3,912 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MzansiMoney - TaxWise Navigator</title>
-    <!-- TailwindCSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Income Tax Calculator | MzansiMoney</title>
+    <meta name="description" content="Calculate your South African income tax easily with our simple, conversational tax calculator. Get an accurate estimate of your tax liability.">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-    <!-- React CDNs -->
-    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js" crossorigin></script>
-    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.4/babel.min.js"></script>
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #046A38; /* South African green */
+            --secondary: #FFB612; /* South African gold */
+            --accent: #007749; /* Darker green */
+            --dark: #1E1E1E;
+            --light: #F5F7FA;
+            --white: #FFFFFF;
+            --text: #333333;
+            --text-light: #6B7280;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+        }
+        
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Open Sans', sans-serif;
+            color: var(--text);
+            background-color: var(--light);
+            line-height: 1.6;
         }
-        h1, h2, h3 {
-            font-family: 'Poppins', sans-serif;
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
         }
-        .bg-deep-purple { background-color: #4A148C; }
-        .text-deep-purple { color: #4A148C; }
-        .bg-gold { background-color: #FFD700; }
-        .text-gold { color: #FFD700; }
-        .bg-green { background-color: #2E7D32; }
-        .text-green { color: #2E7D32; }
-        .border-green { border-color: #2E7D32; }
-        .bg-charcoal { background-color: #212121; }
-        .bg-charcoal-light { background-color: #333333; }
-        .text-light-gray { color: #E0E0E0; }
-        body { background-color: #F5F5F5; }
-        body.dark {
-            background-color: #212121;
+        
+        a {
+            text-decoration: none;
+            color: var(--primary);
+            transition: all 0.3s ease;
         }
-        body.dark .text-gray-600 { color: #E0E0E0; }
-        body.dark .text-gray-800 { color: #E0E0E0; }
-        body.dark .bg-white { background-color: #333333; }
-        body.dark .text-deep-purple { color: #FFD700; }
-        body.dark canvas { background-color: #333333; }
-        .hover\:text-gold:hover { color: #FFD700; }
-        .hover\:bg-gold:hover { background-color: #FFD700; color: #FFFFFF; }
+        
+        a:hover {
+            color: var(--secondary);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        /* Page Header */
+        .page-header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 3rem 0;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .page-header p {
+            max-width: 700px;
+            opacity: 0.9;
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .breadcrumb a {
+            color: var(--secondary);
+        }
+        
+        .breadcrumb .separator {
+            margin: 0 0.5rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Calculator Section */
+        .calculator-section {
+            padding: 3rem 0;
+        }
+        
+        .calculator-container {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        
+        .calculator-main {
+            flex: 2;
+            background-color: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+        }
+        
+        .calculator-sidebar {
+            flex: 1;
+            background-color: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            position: sticky;
+            top: 100px;
+        }
+        
+        .calculation-summary {
+            margin-bottom: 2rem;
+        }
+        
+        .calculation-summary h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .summary-item.total {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .helpful-tips {
+            background-color: #f0fdf4;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .helpful-tips h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .helpful-tips h3 i {
+            margin-right: 0.5rem;
+        }
+        
+        .helpful-tips ul {
+            list-style: none;
+        }
+        
+        .helpful-tips ul li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .helpful-tips ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        /* Conversation UI */
+        .conversation-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .conversation-bubble {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .message {
+            background-color: var(--light);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-top-left-radius: 0;
+            max-width: 80%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .user-message .message {
+            background-color: #f0f7ff;
+            border-top-right-radius: 0;
+            border-top-left-radius: 12px;
+            margin-left: auto;
+        }
+        
+        .user-message {
+            flex-direction: row-reverse;
+        }
+        
+        .user-message .avatar {
+            background-color: #3b82f6;
+        }
+        
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background-color: #e5e7eb;
+        }
+        
+        .step:last-child::after {
+            display: none;
+        }
+        
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+            color: var(--text);
+            margin: 0 auto 0.5rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step.active .step-number {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .step.completed .step-number {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+        
+        .step-label {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+        
+        .step.active .step-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        /* Form Elements */
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .input-prefix {
+            position: relative;
+        }
+        
+        .input-prefix input {
+            padding-left: 2.5rem;
+        }
+        
+        .input-prefix::before {
+            content: 'R';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 600;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: var(--text);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+            transform: translateY(-2px);
+        }
+        
+        /* Results Section */
+        .tax-results {
+            background-color: #f0fdf4;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 2px solid #dcfce7;
+        }
+        
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .results-header h3 {
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .results-header h3 i {
+            margin-right: 0.5rem;
+        }
+        
+        .results-detail {
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #dcfce7;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+        }
+        
+        .result-summary {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .result-summary .amount {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        
+        .result-summary .description {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .action-button {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+        
+        .action-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .action-button i {
+            margin-right: 0.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 3rem 0 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-column ul li a {
+            color: #f1f5f9;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.875rem;
+            color: #cbd5e1;
+        }
+        
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 99;
+            transition: all 0.3s ease;
+        }
+        
+        .dark-mode-toggle:hover {
+            transform: rotate(45deg);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+            
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--white);
+                padding: 1rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: all 0.3s ease;
+            }
+            
+            nav.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .calculator-container {
+                flex-direction: column;
+            }
+            
+            .calculator-sidebar {
+                position: static;
+                order: -1;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .step-indicator {
+                overflow-x: auto;
+                padding-bottom: 1rem;
+            }
+            
+            .step {
+                min-width: 100px;
+            }
+        }
+        
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode header {
+            background-color: #1e1e1e;
+        }
+        
+        body.dark-mode .logo {
+            color: var(--secondary);
+        }
+        
+        body.dark-mode nav ul li a {
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .calculator-main,
+        body.dark-mode .calculator-sidebar {
+            background-color: #1e1e1e;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.dark-mode .message {
+            background-color: #2d2d2d;
+        }
+        
+        body.dark-mode .user-message .message {
+            background-color: #003366;
+        }
+        
+        body.dark-mode .input-group input,
+        body.dark-mode .input-group select {
+            background-color: #2d2d2d;
+            border-color: #3d3d3d;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .btn-secondary {
+            background-color: #3d3d3d;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .helpful-tips {
+            background-color: #1e3a2f;
+        }
+        
+        body.dark-mode .tax-results {
+            background-color: #1e3a2f;
+            border-color: #2d4f3e;
+        }
+        
+        body.dark-mode .detail-row {
+            border-color: #2d4f3e;
+        }
+        
+        body.dark-mode .summary-item {
+            border-color: #3d3d3d;
+        }
+        
+        body.dark-mode .dark-mode-toggle {
+            background-color: #121212;
+            color: var(--secondary);
+        }
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-hand-holding-dollar"></i>
+                    Mzansi<span>Money</span>
+                </a>
+                <button class="nav-toggle" id="navToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav id="mainNav">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="income-tax.html">Tax Calculator</a></li>
+                        <li><a href="budget-planner.html">Budget Planner</a></li>
+                        <li><a href="vat-calculator.html">VAT Calculator</a></li>
+                        <li><a href="articles.html">Financial Tips</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span class="separator">/</span>
+                <span>Income Tax Calculator</span>
+            </div>
+            <h1>South African Income Tax Calculator</h1>
+            <p>Easily calculate your income tax liability for the 2024/2025 tax year with our conversation-based calculator. Get a clear breakdown of your tax and take-home pay.</p>
+        </div>
+    </section>
 
-        function TaxCalculator() {
-            const [darkMode, setDarkMode] = useState(true);
-            const [taxData, setTaxData] = useState({
-                monthlySalary: '',
-                hasTravelAllowance: 'no',
-                travelAllowance: '',
-                housingAllowance: '',
-                employerMedical: '',
-                otherIncome: '',
-                hasSalaryContributions: 'no',
-                salaryContributions: '',
-                hasPrivateContributions: 'no',
-                privateContributions: '',
-                dependents: '',
-                employeeMedical: '',
-                medicalExpenses: '',
-                donations: '',
-                workFromHome: false,
-                homeOfficeDeductionAmount: '',
-                claimTravel: false,
-                travelDeductionAmount: '',
-                purchasePrice: '',
-                sellingPrice: '',
-                allowableExpenses: '',
-                ageRange: 'under65'
-            });
-            const [showResults, setShowResults] = useState(false);
-            const chartRef = useRef(null);
-            const chartInstance = useRef(null);
-
-            useEffect(() => {
-                document.body.classList.toggle('dark', darkMode);
-            }, [darkMode]);
-
-            useEffect(() => {
-                if (showResults && chartRef.current) {
-                    if (chartInstance.current) {
-                        chartInstance.current.destroy();
-                    }
-                    const ctx = chartRef.current.getContext('2d');
-                    chartInstance.current = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: [
-                                'Total Income',
-                                'Taxable Income',
-                                'Tax Before Rebates',
-                                'Rebates',
-                                'Medical Credits',
-                                showResults.homeOfficeDeduction > 0 ? 'Home Office Deduction' : null,
-                                showResults.travelDeduction > 0 ? 'Travel Deduction' : null,
-                                showResults.taxableCapitalGain > 0 ? 'Capital Gains Tax' : null,
-                                'Final Tax'
-                            ].filter(label => label),
-                            datasets: [{
-                                label: 'Tax Breakdown (ZAR)',
-                                data: [
-                                    showResults.totalIncome,
-                                    showResults.taxableIncome,
-                                    showResults.taxBeforeRebates,
-                                    showResults.totalRebate,
-                                    showResults.medicalCredit,
-                                    showResults.homeOfficeDeduction > 0 ? showResults.homeOfficeDeduction : null,
-                                    showResults.travelDeduction > 0 ? showResults.travelDeduction : null,
-                                    showResults.taxableCapitalGain > 0 ? showResults.capitalGainsTax : null,
-                                    showResults.finalTax
-                                ].filter(data => data !== null),
-                                backgroundColor: [
-                                    '#808080',
-                                    '#808080',
-                                    '#4A148C',
-                                    '#FFD700',
-                                    '#2E7D32',
-                                    '#2E7D32',
-                                    '#2E7D32',
-                                    '#4A148C',
-                                    '#4A148C'
-                                ].slice(0, showResults.taxableCapitalGain > 0 ? 9 : (showResults.homeOfficeDeduction > 0 || showResults.travelDeduction > 0) ? 7 : 5)
-                            }]
-                        },
-                        options: {
-                            indexAxis: 'y',
-                            scales: {
-                                x: {
-                                    beginAtZero: true,
-                                    title: { display: true, text: 'Amount (ZAR)', color: darkMode ? '#E0E0E0' : '#000000' },
-                                    ticks: { color: darkMode ? '#E0E0E0' : '#000000' }
-                                },
-                                y: {
-                                    ticks: { color: darkMode ? '#E0E0E0' : '#000000' }
-                                }
-                            },
-                            plugins: {
-                                legend: { display: false },
-                                tooltip: {
-                                    callbacks: {
-                                        label: (context) => `R ${context.parsed.x.toFixed(2)}`
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-                return () => {
-                    if (chartInstance.current) {
-                        chartInstance.current.destroy();
-                    }
-                };
-            }, [showResults, darkMode]);
-
-            const calculateTax = () => {
-                try {
-                    // Income
-                    const monthlySalary = parseFloat(taxData.monthlySalary) || 0;
-                    const travelAllowance = parseFloat(taxData.travelAllowance) || 0;
-                    const housingAllowance = parseFloat(taxData.housingAllowance) || 0;
-                    const employerMedical = parseFloat(taxData.employerMedical) || 0;
-                    const otherIncome = parseFloat(taxData.otherIncome) || 0;
-                    const totalIncome = (monthlySalary * 12) + travelAllowance + housingAllowance + employerMedical + otherIncome;
-
-                    // Deductions
-                    const salaryContributions = parseFloat(taxData.salaryContributions) || 0;
-                    const privateContributions = parseFloat(taxData.privateContributions) || 0;
-                    const donations = parseFloat(taxData.donations) || 0;
-                    const workFromHome = taxData.workFromHome;
-                    const claimTravel = taxData.claimTravel;
-                    const homeOfficeDeduction = workFromHome ? (parseFloat(taxData.homeOfficeDeductionAmount) || 0) : 0;
-                    const travelDeduction = claimTravel ? (parseFloat(taxData.travelDeductionAmount) || 0) : 0;
-
-                    const retirementTotal = salaryContributions + privateContributions;
-                    const maxRetirementDeduction = Math.min(retirementTotal, totalIncome * 0.275, 350000);
-                    const maxDonationsDeduction = Math.min(donations, totalIncome * 0.1);
-
-                    // Capital Gains
-                    const purchasePrice = parseFloat(taxData.purchasePrice) || 0;
-                    const sellingPrice = parseFloat(taxData.sellingPrice) || 0;
-                    const allowableExpenses = parseFloat(taxData.allowableExpenses) || 0;
-                    const capitalGain = sellingPrice - purchasePrice - allowableExpenses;
-                    const taxableCapitalGain = Math.max(0, capitalGain - 40000) * 0.4;
-
-                    // Taxable Income
-                    const taxableIncome = Math.max(0, totalIncome - maxRetirementDeduction - maxDonationsDeduction - homeOfficeDeduction - travelDeduction) + taxableCapitalGain;
-
-                    // SARS 2025/26 Tax Brackets (projected)
-                    let tax = 0;
-                    if (taxableIncome > 1904300) {
-                        tax = 675054 + (taxableIncome - 1904300) * 0.45;
-                    } else if (taxableIncome > 717100) {
-                        tax = 211260 + (taxableIncome - 717100) * 0.41;
-                    } else if (taxableIncome > 536700) {
-                        tax = 136157 + (taxableIncome - 536700) * 0.36;
-                    } else if (taxableIncome > 388100) {
-                        tax = 81161 + (taxableIncome - 388100) * 0.31;
-                    } else if (taxableIncome > 248500) {
-                        tax = 44726 + (taxableIncome - 248500) * 0.26;
-                    } else if (taxableIncome > 0) {
-                        tax = taxableIncome * 0.18;
-                    }
-
-                    // Rebates
-                    const primaryRebate = 18063;
-                    const secondaryRebate = taxData.ageRange !== 'under65' ? 9900 : 0;
-                    const tertiaryRebate = taxData.ageRange === '75plus' ? 3294 : 0;
-                    const totalRebate = primaryRebate + secondaryRebate + tertiaryRebate;
-
-                    // Medical Credits
-                    const dependents = parseInt(taxData.dependents) || 0;
-                    const employeeMedical = parseFloat(taxData.employeeMedical) || 0;
-                    const medicalExpenses = parseFloat(taxData.medicalExpenses) || 0;
-                    let medicalCredit = 0;
-                    if (dependents >= 2) {
-                        medicalCredit = (364 * 2 + 246 * (dependents - 2)) * 12;
-                    } else if (dependents === 1) {
-                        medicalCredit = 364 * 12;
-                    }
-                    medicalCredit += employeeMedical + medicalExpenses;
-
-                    // Final Tax
-                    const taxBeforeRebates = tax;
-                    tax = Math.max(0, tax - totalRebate);
-                    const finalTax = Math.max(0, tax - medicalCredit);
-                    const capitalGainsTax = taxableCapitalGain > 0 ? (finalTax - Math.max(0, taxBeforeRebates - totalRebate - medicalCredit)) : 0;
-                    const effectiveTaxRate = taxableIncome > 0 ? (finalTax / taxableIncome * 100).toFixed(2) : 0;
-
-                    // Threshold
-                    const threshold = taxData.ageRange === 'under65' ? 100350 : taxData.ageRange === '65to74' ? 155100 : 173600;
-
-                    setShowResults({
-                        totalIncome,
-                        taxableIncome,
-                        taxBeforeRebates,
-                        totalRebate,
-                        medicalCredit,
-                        finalTax,
-                        capitalGainsTax,
-                        effectiveTaxRate,
-                        threshold,
-                        taxableCapitalGain,
-                        homeOfficeDeduction,
-                        travelDeduction
-                    });
-                } catch (error) {
-                    console.error('Calculation error:', error);
-                    alert('An error occurred during calculation. Please check your inputs and try again.');
-                }
-            };
-
-            return (
-                <div className="min-h-screen">
-                    <header className="sticky top-0 z-50 bg-deep-purple shadow-md">
-                        <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-                            <div className="text-2xl font-bold text-white">
-                                <a href="/index.html">MzansiMoney</a>
-                            </div>
-                            <div className="space-x-6 flex items-center">
-                                <a href="/index.html#home" className="text-gold hover:text-white">Home</a>
-                                <a href="/income-tax.html" className="text-gold hover:text-white">Tax Calculator</a>
-                                <a href="/budget-planner.html" className="text-gold hover:text-white">Budget Planner</a>
-                                <a href="/vat-calculator.html" className="text-gold hover:text-white">VAT Calculator</a>
-                                <a href="/articles.html" className="text-gold hover:text-white">Articles</a>
-                                <button
-                                    onClick={() => setDarkMode(!darkMode)}
-                                    className="p-2 rounded-full bg-gray-200 dark:bg-charcoal text-deep-purple dark:text-gold"
-                                    aria-label="Toggle dark mode"
-                                >
-                                    {darkMode ? '☀️' : '🌙'}
-                                </button>
-                            </div>
-                        </nav>
-                    </header>
-                    <div className="container mx-auto px-4 py-16">
-                        <h1 className="text-3xl font-bold text-gold mb-8 text-center">TaxWise Navigator</h1>
-                        <div className="max-w-2xl mx-auto bg-white dark:bg-charcoal-light p-6 rounded-lg shadow-md">
-                            {!showResults ? (
-                                <div>
-                                    <h2 className="text-2xl font-semibold text-gold mb-4">Enter Your Tax Details</h2>
-                                    <h3 className="text-lg font-semibold text-gold mb-2">Income Details</h3>
-                                    <div className="mb-4">
-                                        <label htmlFor="monthlySalary" className="block text-gray-600 dark:text-light-gray mb-2">Monthly Basic Salary (ZAR)</label>
-                                        <input
-                                            type="number"
-                                            id="monthlySalary"
-                                            value={taxData.monthlySalary}
-                                            onChange={(e) => setTaxData({ ...taxData, monthlySalary: e.target.value })}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter monthly salary"
-                                            aria-label="Monthly basic salary in ZAR"
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label className="block text-gray-600 dark:text-light-gray mb-2">Does your salary include money for a travel allowance?</label>
-                                        <div className="flex space-x-4">
-                                            <label className="flex items-center text-gray-600 dark:text-light-gray">
-                                                <input
-                                                    type="radio"
-                                                    name="hasTravelAllowance"
-                                                    value="yes"
-                                                    checked={taxData.hasTravelAllowance === 'yes'}
-                                                    onChange={(e) => setTaxData({ ...taxData, hasTravelAllowance: e.target.value })}
-                                                    className="mr-2"
-                                                    aria-label="Travel allowance yes"
-                                                />
-                                                Yes
-                                            </label>
-                                            <label className="flex items-center text-gray-600 dark:text-light-gray">
-                                                <input
-                                                    type="radio"
-                                                    name="hasTravelAllowance"
-                                                    value="no"
-                                                    checked={taxData.hasTravelAllowance === 'no'}
-                                                    onChange={(e) => setTaxData({ ...taxData, hasTravelAllowance: e.target.value, travelAllowance: '' })}
-                                                    className="mr-2"
-                                                    aria-label="Travel allowance no"
-                                                />
-                                                No
-                                            </label>
-                                        </div>
-                                        {taxData.hasTravelAllowance === 'yes' && (
-                                            <div className="mt-2">
-                                                <label htmlFor="travelAllowance" className="block text-gray-600 dark:text-light-gray mb-2">Please enter the amount (ZAR)</label>
-                                                <input
-                                                    type="number"
-                                                    id="travelAllowance"
-                                                    value={taxData.travelAllowance}
-                                                    onChange={(e) => setTaxData({ ...taxData, travelAllowance: e.target.value })}
-                                                    className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                                    placeholder="Enter travel allowance"
-                                                    aria-label="Travel allowance amount in ZAR"
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="housingAllowance" className="block text-gray-600 dark:text-light-gray mb-2">Housing Allowance (ZAR)</label>
-                                        <input
-                                            type="number"
-                                            id="housingAllowance"
-                                            value={taxData.housingAllowance}
-                                            onChange={(e) => setTaxData({ ...taxData, housingAllowance: e.target.value })}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter housing allowance"
-                                            aria-label="Housing allowance in ZAR"
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="employerMedical" className="block text-gray-600 dark:text-light-gray mb-2">Employer Medical Aid Contribution (ZAR)</label>
-                                        <input
-                                            type="number"
-                                            id="employerMedical"
-                                            value={taxData.employerMedical}
-                                            onChange={(e) => setTaxData({ ...taxData, employerMedical: e.target.value })}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter employer contribution"
-                                            aria-label="Employer medical aid contribution in ZAR"
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="otherIncome" className="block text-gray-600 dark:text-light-gray mb-2">Other Income (ZAR)</label>
-                                        <input
-                                            type="number"
-                                            id="otherIncome"
-                                            value={taxData.otherIncome}
-                                            onChange={(e) => setTaxData({ ...taxData, otherIncome: e.target.value })}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter other income"
-                                            aria-label="Other income in ZAR"
-                                        />
-                                    </div>
-                                    <h3 className="text-lg font-semibold text-gold mb-2 mt-6">Deductions & Expenses</h3>
-                                    <div className="mb-4">
-                                        <label className="block text-gray-600 dark:text-light-gray mb-2">Does your salary include contributions to a pension, provident fund, or RAF?</label>
-                                        <div className="flex space-x-4">
-                                            <label className="flex items-center text-gray-600 dark:text-light-gray">
-                                                <input
-                                                    type="radio"
-                                                    name="hasSalaryContributions"
-                                                    value="yes"
-                                                    checked={taxData.hasSalaryContributions === 'yes'}
-                                                    onChange={(e) => setTaxData({ ...taxData, hasSalaryContributions: e.target.value })}
-                                                    className="mr-2"
-                                                    aria-label="Salary contributions yes"
-                                                />
-                                                Yes
-                                            </label>
-                                            <label className="flex items-center text-gray-600 dark:text-light-gray">
-                                                <input
-                                                    type="radio"
-                                                    name="hasSalaryContributions"
-                                                    value="no"
-                                                    checked={taxData.hasSalaryContributions === 'no'}
-                                                    onChange={(e) => setTaxData({ ...taxData, hasSalaryContributions: e.target.value, salaryContributions: '' })}
-                                                    className="mr-2"
-                                                    aria-label="Salary contributions no"
-                                                />
-                                                No
-                                            </label>
-                                        </div>
-                                        {taxData.hasSalaryContributions === 'yes' && (
-                                            <div className="mt-2">
-                                                <label htmlFor="salaryContributions" className="block text-gray-600 dark:text-light-gray mb-2">Please enter the total amount (ZAR)</label>
-                                                <input
-                                                    type="number"
-                                                    id="salaryContributions"
-                                                    value={taxData.salaryContributions}
-                                                    onChange={(e) => setTaxData({ ...taxData, salaryContributions: e.target.value })}
-                                                    className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                                    placeholder="Enter total contributions"
-                                                    aria-label="Salary contributions amount in ZAR"
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="mb-4">
-                                        <label className="block text-gray-600 dark:text-light-gray mb-2">Do you pay private contributions to a pension, provident fund, or RAF?</label>
-                                        <div className="flex space-x-4">
-                                            <label className="flex items-center text-gray-600 dark:text-light-gray">
-                                                <input
-                                                    type="radio"
-                                                    name="hasPrivateContributions"
-                                                    value="yes"
-                                                    checked={taxData.hasPrivateContributions === 'yes'}
-                                                    onChange={(e) => setTaxData({ ...taxData, hasPrivateContributions: e.target.value })}
-                                                    className="mr-2"
-                                                    aria-label="Private contributions yes"
-                                                />
-                                                Yes
-                                            </label>
-                                            <label className="flex items-center text-gray-600 dark:text-light-gray">
-                                                <input
-                                                    type="radio"
-                                                    name="hasPrivateContributions"
-                                                    value="no"
-                                                    checked={taxData.hasPrivateContributions === 'no'}
-                                                    onChange={(e) => setTaxData({ ...taxData, hasPrivateContributions: e.target.value, privateContributions: '' })}
-                                                    className="mr-2"
-                                                    aria-label="Private contributions no"
-                                                />
-                                                No
-                                            </label>
-                                        </div>
-                                        {taxData.hasPrivateContributions === 'yes' && (
-                                            <div className="mt-2">
-                                                <label htmlFor="privateContributions" className="block text-gray-600 dark:text-light-gray mb-2">Please enter the total amount (ZAR)</label>
-                                                <input
-                                                    type="number"
-                                                    id="privateContributions"
-                                                    value={taxData.privateContributions}
-                                                    onChange={(e) => setTaxData({ ...taxData, privateContributions: e.target.value })}
-                                                    className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                                    placeholder="Enter total contributions"
-                                                    aria-label="Private contributions amount in ZAR"
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="dependents" className="block text-gray-600 dark:text-light-gray mb-2">Number of Medical Aid Dependents</label>
-                                        <input
-                                            type="number"
-                                            id="dependents"
-                                            value={taxData.dependents}
-                                            onChange={(e) => setTaxData({ ...taxData, dependents: e.target.value })}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter number of dependents"
-                                            aria-label="Number of medical aid dependents"
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="employeeMedical" className="block text-gray-600 dark:text-light-gray mb-2">Employee Medical Aid Contribution (ZAR)</label>
-                                        <input
-                                            type="number"
-                                            id="employeeMedical"
-                                            value={taxData.employeeMedical}
-                                            onChange={(e) => setTaxData({ ...taxData, employeeMedical: e.target.value })}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter your contribution"
-                                            aria-label="Employee medical aid contribution in ZAR"
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="medicalExpenses" className="block text-gray-600 dark:text-light-gray mb-2">Out-of-Pocket Medical Expenses (ZAR)</label>
-                                        <input
-                                            type="number"
-                                            id="medicalExpenses"
-                                            value={taxData.medicalExpenses}
-                                            onChange={(e) => setTaxData({ ...taxData, medicalExpenses: e.target.value })}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter medical expenses"
-                                            aria-label="Out-of-pocket medical expenses in ZAR"
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="donations" className="block text-gray-600 dark:text-light-gray mb-2">Donations to PBOs (ZAR)</label>
-                                        <input
-                                            type="number"
-                                            id="donations"
-                                            value={taxData.donations}
-                                            onChange={(e) => setTaxData({ ...taxData, donations: e.target.value })}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter donations"
-                                            aria-label="Donations to PBOs in ZAR"
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="ageRange" className="block text-gray-600 dark:text-light-gray mb-2">Your Age Range</label>
-                                        <select
-                                            id="ageRange"
-                                            value={taxData.ageRange}
-                                            onChange={(e) => setTaxData({ ...taxData, ageRange: e.target.value })}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            aria-label="Select your age range"
-                                        >
-                                            <option value="under65">Under 65</option>
-                                            <option value="65to74">65 to under 75</option>
-                                            <option value="75plus">75 and older</option>
-                                        </select>
-                                    </div>
-                                    <div className="mb-4">
-                                        <label className="flex items-center text-gray-600 dark:text-light-gray">
-                                            <input
-                                                type="checkbox"
-                                                checked={taxData.workFromHome}
-                                                onChange={(e) => setTaxData({ ...taxData, workFromHome: e.target.checked, homeOfficeDeductionAmount: e.target.checked ? taxData.homeOfficeDeductionAmount : '' })}
-                                                className="mr-2"
-                                                aria-label="I work from home"
-                                            />
-                                            I work from home
-                                        </label>
-                                        {taxData.workFromHome && (
-                                            <div className="mt-2">
-                                                <label htmlFor="homeOfficeDeductionAmount" className="block text-gray-600 dark:text-light-gray mb-2">Enter home office deduction amount (ZAR)</label>
-                                                <input
-                                                    type="number"
-                                                    id="homeOfficeDeductionAmount"
-                                                    value={taxData.homeOfficeDeductionAmount}
-                                                    onChange={(e) => setTaxData({ ...taxData, homeOfficeDeductionAmount: e.target.value })}
-                                                    className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                                    placeholder="Enter deduction amount"
-                                                    aria-label="Home office deduction amount in ZAR"
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="mb-4">
-                                        <label className="flex items-center text-gray-600 dark:text-light-gray">
-                                            <input
-                                                type="checkbox"
-                                                checked={taxData.claimTravel}
-                                                onChange={(e) => setTaxData({ ...taxData, claimTravel: e.target.checked, travelDeductionAmount: e.target.checked ? taxData.travelDeductionAmount : '' })}
-                                                className="mr-2"
-                                                aria-label="I want to claim travel expenses"
-                                            />
-                                            I want to claim travel expenses
-                                        </label>
-                                        {taxData.claimTravel && (
-                                            <div className="mt-2">
-                                                <label htmlFor="travelDeductionAmount" className="block text-gray-600 dark:text-light-gray mb-2">Enter travel expense deduction amount (ZAR)</label>
-                                                <input
-                                                    type="number"
-                                                    id="travelDeductionAmount"
-                                                    value={taxData.travelDeductionAmount}
-                                                    onChange={(e) => setTaxData({ ...taxData, travelDeductionAmount: e.target.value })}
-                                                    className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                                    placeholder="Enter deduction amount"
-                                                    aria-label="Travel expense deduction amount in ZAR"
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                    <h3 className="text-lg font-semibold text-gold mb-2 mt-6">Capital Gains Tax Estimator</h3>
-                                    <div className="mb-4">
-                                        <label htmlFor="purchasePrice" className="block text-gray-600 dark:text-light-gray mb-2">Purchase Price (ZAR)</label>
-                                        <input
-                                            type="number"
-                                            id="purchasePrice"
-                                            value={taxData.purchasePrice}
-                                            onChange={(e) => setTaxData({ ...taxData, purchasePrice: e.target.value })}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter purchase price"
-                                            aria-label="Purchase price in ZAR"
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="sellingPrice" className="block text-gray-600 dark:text-light-gray mb-2">Selling Price (ZAR)</label>
-                                        <input
-                                            type="number"
-                                            id="sellingPrice"
-                                            value={taxData.sellingPrice}
-                                            onChange={(e) => setTaxData({ ...taxData, sellingPrice: e.target.value })}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter selling price"
-                                            aria-label="Selling price in ZAR"
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label htmlFor="allowableExpenses" className="block text-gray-600 dark:text-light-gray mb-2">Allowable Expenses (ZAR)</label>
-                                        <input
-                                            type="number"
-                                            id="allowableExpenses"
-                                            value={taxData.allowableExpenses}
-                                            onChange={(e) => setTaxData({ ...taxData, allowableExpenses: e.target.value })}
-                                            className="w-full p-2 border border-green rounded dark:bg-charcoal dark:text-light-gray dark:border-green"
-                                            placeholder="Enter allowable expenses"
-                                            aria-label="Allowable expenses in ZAR"
-                                        />
-                                    </div>
-                                    <button
-                                        onClick={calculateTax}
-                                        className="w-full px-4 py-2 bg-deep-purple text-white rounded hover:bg-gold"
-                                        aria-label="Calculate tax"
-                                    >
-                                        Calculate Tax
-                                    </button>
-                                </div>
-                            ) : (
-                                <div>
-                                    <h2 className="text-2xl font-semibold text-gold mb-4">Your Tax Breakdown</h2>
-                                    <div className="mb-6">
-                                        <h3 className="text-lg font-semibold text-gold mb-2">Summary</h3>
-                                        <p className="text-gray-600 dark:text-light-gray">Total Income: R {showResults.totalIncome.toFixed(2)}</p>
-                                        <p className="text-gray-600 dark:text-light-gray">Taxable Income: R {showResults.taxableIncome.toFixed(2)}</p>
-                                        <p className="text-gray-600 dark:text-light-gray">Home Office Deduction: R {showResults.homeOfficeDeduction.toFixed(2)}</p>
-                                        <p className="text-gray-600 dark:text-light-gray">Travel Expense Deduction: R {showResults.travelDeduction.toFixed(2)}</p>
-                                        <p className="text-gray-600 dark:text-light-gray">Tax Before Rebates: R {showResults.taxBeforeRebates.toFixed(2)}</p>
-                                        <p className="text-gray-600 dark:text-light-gray">Total Rebates: R {showResults.totalRebate.toFixed(2)}</p>
-                                        <p className="text-gray-600 dark:text-light-gray">Medical Tax Credits: R {showResults.medicalCredit.toFixed(2)}</p>
-                                        <p className="text-gold font-semibold">Final Income Tax Payable: R {showResults.finalTax.toFixed(2)}</p>
-                                        {showResults.taxableCapitalGain > 0 && (
-                                            <p className="text-gray-600 dark:text-light-gray">Capital Gains Tax Included: R {showResults.capitalGainsTax.toFixed(2)}</p>
-                                        )}
-                                        <p className="text-gray-600 dark:text-light-gray">Effective Tax Rate: {showResults.effectiveTaxRate}%</p>
-                                        <p className="text-sm text-gray-600 dark:text-light-gray mt-2">
-                                            Note: No tax is owed if your income is below R {showResults.threshold.toLocaleString()} based on your age range.
-                                        </p>
-                                        <p className="text-sm text-gray-600 dark:text-light-gray mt-2">
-                                            Home office and travel deductions are estimates. Verify with SARS for specific rules (e.g., home office expenses, travel logbook).
-                                        </p>
-                                    </div>
-                                    <div className="mb-6">
-                                        <h3 className="text-lg font-semibold text-gold mb-2">Tax Breakdown Visualization</h3>
-                                        <canvas ref={chartRef} className="w-full"></canvas>
-                                    </div>
-                                    <div className="mb-6 text-sm text-gray-600 dark:text-light-gray">
-                                        <p><strong>Tip:</strong> Maximize deductions like retirement contributions (up to 27.5%, max R350,000) and donations (up to 10%). Verify results with SARS for accuracy.</p>
-                                    </div>
-                                    <button
-                                        onClick={() => setShowResults(false)}
-                                        className="w-full px-4 py-2 bg-gray-300 dark:bg-charcoal rounded hover:bg-gold hover:text-white"
-                                        aria-label="Edit inputs"
-                                    >
-                                        Edit Inputs
-                                    </button>
-                                </div>
-                            )}
+    <section class="calculator-section">
+        <div class="container">
+            <div class="calculator-container">
+                <div class="calculator-main">
+                    <div class="step-indicator">
+                        <div class="step active">
+                            <div class="step-number">1</div>
+                            <div class="step-label">Income</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-label">Deductions</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-label">Tax Credits</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-label">Results</div>
                         </div>
                     </div>
-                    <footer className="bg-white dark:bg-charcoal-light py-4 text-center">
-                        <p className="text-gray-600 dark:text-light-gray text-sm">
-                            © 2025 MzansiMoney | All Rights Reserved | <a href="/privacy.html" className="text-green hover:text-gold">Privacy Policy</a>
-                        </p>
-                    </footer>
-                </div>
-            );
-        }
-
-        ReactDOM.render(<TaxCalculator />, document.getElementById('root'));
-    </script>
-</body>
-</html>
+                    
+                    <div class="conversation-container">
+                        <div class="conversation-bubble">
+                            <div class="avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message">
+                                <p>Hi there! I'm your MzansiMoney tax assistant. Let me help you calculate your income tax for the 2024/2025 tax year.</p>
+                                <p style="margin-top: 1rem;">First, I need to know a bit about your employment situation. What type of income would you like to calculate tax for?</p>
+                                
+                                <div class="input-group" style="margin-top: 1.5rem;">
+                                    <select id="incomeType">
+                                        <option value="salary">Salary / Regular employment</option>
+                                        <option value="freelance">Freelance / Independent contractor</option>
+                                        <option value="business">Small business owner</option>
+                                        <option value="rental">Rental income</option>
+                                        <option value="investment">Investment income</option>
+                                        <option value="multiple">Multiple income sources</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="conversation-bubble">
+                            <div class="avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message">
+                                <p>Great! Now I need to know your annual gross salary before any deductions.</p>
+                                <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #6b7280;">This is your total cost to company or the salary figure before tax, medical aid, retirement contributions, etc.</p>
+                                
+                                <div class="input-group" style="margin-top: 1rem;">
+                                    <label for="annualSalary">Annual gross salary</label>
+                                    <div class="input-prefix">
+                                        <input type="number" id="annualSalary" placeholder="e.g. 450000">
+                                    </div>
+                                </div>
+                                
+                                <p style="margin-top: 1rem;">Would you prefer to enter your monthly salary instead?</p>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="monthly" name="salaryType" value="monthly">
+                                        <label for="monthly">Yes, monthly</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="annual" name="salaryType" value="annual" checked>
+                                        <label for="annual">No, annual is fine</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="conversation-bubble user-message">
+                            <div class="avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="message">
+                                <p>R450,000 per year</p>
+                            </div>
+                        </div>
+                        
+                        <div class="conversation-bubble">
+                            <div class="avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message">
+                                <p>Thank you! Now let's talk about your retirement contributions. Do you contribute to any of the following?</p>
+                                
+                                <div class="input-group" style="margin-top: 1rem;">
+                                    <label for="pension">Monthly pension/provident fund contributions</label>
+                                    <div class="input-prefix">
+                                        <input type="number" id="pension" placeholder="e.g. 2500">
+                                    </div>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <label for="ra">Monthly retirement annuity contributions</label>
+                                    <div class="input-prefix">
+                                        <input type="number" id="ra" placeholder="e.g. 1000">
+                                    </div>
+                                </div>
+                                
+                                <div class="btn-group">
+                                    <button class="btn btn-primary">Continue to Next Step</button>
+                                    <button class="btn btn-secondary">Back</button>
