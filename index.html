@@ -919,3 +919,52 @@
 
     <div class="dark-mode-toggle" id="darkModeToggle">
         <i
+            <div class="dark-mode-toggle" id="darkModeToggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <script>
+        // Mobile Navigation Toggle
+        const navToggle = document.getElementById('navToggle');
+        const mainNav = document.getElementById('mainNav');
+        
+        navToggle.addEventListener('click', function() {
+            mainNav.classList.toggle('active');
+        });
+        
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const moonIcon = '<i class="fas fa-moon"></i>';
+        const sunIcon = '<i class="fas fa-sun"></i>';
+        
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.innerHTML = sunIcon;
+        }
+        
+        darkModeToggle.addEventListener('click', function() {
+            if (document.body.classList.contains('dark-mode')) {
+                document.body.classList.remove('dark-mode');
+                darkModeToggle.innerHTML = moonIcon;
+                localStorage.setItem('darkMode', null);
+            } else {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = sunIcon;
+                localStorage.setItem('darkMode', 'enabled');
+            }
+        });
+        
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
