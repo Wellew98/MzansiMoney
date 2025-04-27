@@ -931,3 +931,218 @@
         <div class="container">
             <h2 class="section-title">What Our Users Say</h2>
             <p class="section-subtitle">Thousands of South Africans rely
+                <p class="section-subtitle">Thousands of South Africans rely on our tools to make informed financial decisions.</p>
+            
+            <div class="testimonials-slider">
+                <div class="testimonials-container" id="testimonialsContainer">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            "The SARS tax calculator saved me so much time during tax season. It's incredibly accurate and much easier to use than the official calculators. The detailed breakdown of deductions helped me optimize my return."
+                        </div>
+                        <div class="testimonial-author">Thabo Nkosi</div>
+                        <div class="testimonial-role">Financial Advisor, Johannesburg</div>
+                    </div>
+                    
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            "The home loan calculator helped me understand exactly what I could afford when buying my first house. The transfer cost estimates were spot on and saved me from any surprises during the process."
+                        </div>
+                        <div class="testimonial-author">Sarah Davids</div>
+                        <div class="testimonial-role">First-time Homeowner, Cape Town</div>
+                    </div>
+                    
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            "As a small business owner, the VAT calculator is essential for my operations. The budget planner also helped me organize my business finances in a way that makes sense. Highly recommend!"
+                        </div>
+                        <div class="testimonial-author">Mpho Khumalo</div>
+                        <div class="testimonial-role">Small Business Owner, Durban</div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-nav" id="testimonialNav">
+                    <span class="testimonial-nav-item active" data-index="0"></span>
+                    <span class="testimonial-nav-item" data-index="1"></span>
+                    <span class="testimonial-nav-item" data-index="2"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Take Control of Your Finances Today</h2>
+            <p class="cta-description">Start using our free South African financial tools to make better financial decisions and plan for a secure future.</p>
+            <div class="cta-buttons">
+                <a href="#tools" class="btn btn-cta">Get Started Now</a>
+                <a href="#updates" class="btn btn-cta-secondary">Latest Updates</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Company Info -->
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <i class="fas fa-calculator"></i>
+                        FinCalc<span style="color: var(--primary);">SA</span>
+                    </div>
+                    <p class="footer-description">Providing South Africans with free, accurate, and user-friendly financial tools to help make informed financial decisions.</p>
+                    <div class="footer-social">
+                        <a href="#" class="footer-social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="footer-social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="footer-social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="footer-social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="footer-col">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="#">Home</a></li>
+                        <li class="footer-link"><a href="#tools">Financial Tools</a></li>
+                        <li class="footer-link"><a href="#about">About Us</a></li>
+                        <li class="footer-link"><a href="#updates">Financial Updates</a></li>
+                        <li class="footer-link"><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Financial Tools -->
+                <div class="footer-col">
+                    <h3 class="footer-heading">Financial Tools</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link"><a href="tax-calculator.html">SARS Income Tax Calculator</a></li>
+                        <li class="footer-link"><a href="budget-planner.html">Budget Planner</a></li>
+                        <li class="footer-link"><a href="loan-calculators.html">Loan Calculators</a></li>
+                        <li class="footer-link"><a href="vat-calculator.html">VAT Calculator</a></li>
+                        <li class="footer-link"><a href="retirement-calculator.html">Retirement Calculator</a></li>
+                        <li class="footer-link"><a href="investment-calculator.html">Investment Calculator</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Newsletter -->
+                <div class="footer-col">
+                    <h3 class="footer-heading">Stay Updated</h3>
+                    <p class="footer-newsletter-text">Subscribe to receive notifications about tax updates, new calculators, and financial tips.</p>
+                    <form class="footer-newsletter-form">
+                        <input type="email" placeholder="Your email address" class="footer-newsletter-input" required>
+                        <button type="submit" class="footer-newsletter-button">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.8rem;">We respect your privacy. Unsubscribe at any time.</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 FinCalcSA. All rights reserved. | <a href="privacy-policy.html" style="color: rgba(255, 255, 255, 0.7);">Privacy Policy</a> | <a href="terms.html" style="color: rgba(255, 255, 255, 0.7);">Terms of Use</a></p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navMenu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Smooth Scrolling for Navigation Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Close mobile menu if open
+                if (navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+                
+                // Scroll to target
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Testimonials Slider
+        const testimonialsContainer = document.getElementById('testimonialsContainer');
+        const testimonialNavItems = document.querySelectorAll('.testimonial-nav-item');
+        let currentTestimonial = 0;
+        
+        function showTestimonial(index) {
+            testimonialsContainer.style.transform = `translateX(-${index * 100}%)`;
+            
+            // Update nav items
+            testimonialNavItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            testimonialNavItems[index].classList.add('active');
+            
+            currentTestimonial = index;
+        }
+        
+        // Set up testimonial navigation
+        testimonialNavItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const index = parseInt(item.getAttribute('data-index'));
+                showTestimonial(index);
+            });
+        });
+        
+        // Auto-rotate testimonials
+        setInterval(() => {
+            currentTestimonial = (currentTestimonial + 1) % testimonialNavItems.length;
+            showTestimonial(currentTestimonial);
+        }, 6000);
+        
+        // Scroll Animation for Elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        // Add animation classes and observers to elements
+        document.querySelectorAll('.tool-card, .feature-item, .update-card').forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(item);
+        });
+        
+        // Add the animation effect when elements come into view
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.animate').forEach(el => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
