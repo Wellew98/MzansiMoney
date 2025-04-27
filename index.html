@@ -3,675 +3,931 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Compass SA - Your Guide to Financial Clarity</title>
+    <title>FinCalc SA | South African Financial Calculators & Tools</title>
+    <meta name="description" content="Free South African financial calculators including SARS income tax, loans, VAT, retirement planning and budgeting tools.">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* Base Styles */
         :root {
-            --primary: #3B82F6;
-            --primary-dark: #2563EB;
-            --secondary: #10B981;
-            --accent: #8B5CF6;
-            --dark: #1E293B;
-            --light: #F9FAFB;
-            --warning: #F59E0B;
-            --gray-100: #F3F4F6;
-            --gray-200: #E5E7EB;
-            --gray-800: #1F2937;
+            --primary: #0070D1;
+            --primary-dark: #005bb1;
+            --secondary: #00BC8C;
+            --secondary-dark: #009670;
+            --text: #333333;
+            --text-light: #666666;
+            --background: #FFFFFF;
+            --background-alt: #F9FBFD;
+            --border: #E1E8ED;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --radius: 12px;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background-color: var(--light);
-            color: var(--dark);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
             line-height: 1.6;
+            background-color: var(--background);
         }
         
-        header {
+        a {
+            text-decoration: none;
+            color: var(--primary);
+            transition: color 0.3s;
+        }
+        
+        a:hover {
+            color: var(--primary-dark);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
             background-color: var(--primary);
             color: white;
-            padding: 1rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 112, 209, 0.2);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--secondary-dark);
+            box-shadow: 0 4px 12px rgba(0, 188, 140, 0.2);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+        
+        .card {
+            background-color: var(--background);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 8px 24px var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--background);
+            box-shadow: 0 2px 10px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            padding: 16px 0;
         }
         
         .logo {
             display: flex;
             align-items: center;
-            font-weight: bold;
             font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
         }
         
-        .logo-icon {
-            margin-right: 0.5rem;
-            font-size: 1.8rem;
+        .logo i {
+            color: var(--primary);
+            margin-right: 8px;
         }
         
-        nav ul {
+        .nav-menu {
             display: flex;
             list-style: none;
         }
         
-        nav ul li {
-            margin-left: 1.5rem;
+        .nav-item {
+            margin-left: 24px;
         }
         
-        nav ul li a {
-            color: white;
-            text-decoration: none;
+        .nav-link {
+            color: var(--text);
             font-weight: 500;
-            padding: 0.5rem 0.75rem;
-            border-radius: 4px;
-            transition: background-color 0.3s;
+            padding: 8px 0;
+            position: relative;
         }
         
-        nav ul li a:hover {
-            background-color: var(--primary-dark);
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s;
         }
         
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+        
+        /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            color: white;
-            padding: 4rem 2rem;
-            text-align: center;
+            background: linear-gradient(135deg, #f5f7fa, #e9ecf3);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
         }
         
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
         
-        .hero p {
+        .hero-text {
+            max-width: 600px;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
             font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto 2rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
         }
         
-        .cta-button {
-            display: inline-block;
-            background-color: var(--secondary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 2rem;
         }
         
-        .cta-button:hover {
-            background-color: #0DA271;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .hero-image {
+            width: 45%;
+            max-width: 500px;
+            border-radius: var(--radius);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
         }
         
-        .tools-section {
-            padding: 4rem 2rem;
-        }
-        
-        .section-heading {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .section-heading h2 {
-            font-size: 2rem;
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-        
-        .section-heading p {
-            color: var(--gray-800);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .tools-grid {
+        /* Featured Tools Section */
+        .tool-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
         }
         
         .tool-card {
-            background-color: white;
-            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 24px var(--shadow);
             transition: transform 0.3s, box-shadow 0.3s;
         }
         
         .tool-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 16px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
         }
         
         .tool-card-header {
-            padding: 1.5rem;
-            background-color: var(--gray-100);
-            display: flex;
-            align-items: center;
-        }
-        
-        .tool-icon {
+            padding: 24px;
             background-color: var(--primary);
             color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-right: 1rem;
+            text-align: center;
         }
         
-        .tool-card-header h3 {
+        .tool-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+        
+        .tool-card-title {
             font-size: 1.25rem;
-            color: var(--dark);
+            font-weight: 600;
         }
         
         .tool-card-body {
-            padding: 1.5rem;
+            padding: 24px;
+            flex-grow: 1;
+            background-color: var(--background);
         }
         
-        .tool-card-body p {
-            color: var(--gray-800);
-            margin-bottom: 1.5rem;
+        .tool-card-description {
+            color: var(--text-light);
+            margin-bottom: 24px;
         }
         
-        .tool-button {
-            display: inline-block;
-            background-color: var(--primary);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.3s;
+        .tool-card-footer {
+            padding: 16px 24px;
+            background-color: var(--background-alt);
+            display: flex;
+            justify-content: center;
         }
         
-        .tool-button:hover {
-            background-color: var(--primary-dark);
-        }
-        
+        /* Why Choose Us Section */
         .features-section {
-            background-color: var(--gray-100);
-            padding: 4rem 2rem;
+            background-color: var(--background-alt);
         }
         
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            gap: 32px;
         }
         
         .feature-item {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
         }
         
         .feature-icon {
-            font-size: 2.5rem;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: rgba(0, 112, 209, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
             color: var(--primary);
-            margin-bottom: 1rem;
+            font-size: 2rem;
         }
         
-        .feature-item h3 {
-            margin-bottom: 1rem;
-            color: var(--dark);
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
         }
         
-        .feature-item p {
-            color: var(--gray-800);
+        .feature-description {
+            color: var(--text-light);
         }
         
-        .testimonials-section {
-            padding: 4rem 2rem;
+        /* Latest Updates Section */
+        .updates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+        }
+        
+        .update-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .update-card-content {
+            padding: 24px;
+            flex-grow: 1;
+        }
+        
+        .update-date {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+        
+        .update-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .update-excerpt {
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-description {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+        
+        .btn-cta {
+            background-color: white;
+            color: var(--primary);
+        }
+        
+        .btn-cta:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--primary-dark);
+        }
+        
+        .btn-cta-secondary {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-cta-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        /* Testimonials Section */
+        .testimonials-slider {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
         }
         
         .testimonials-container {
-            max-width: 1000px;
-            margin: 0 auto;
+            display: flex;
+            transition: transform 0.5s ease;
         }
         
-        .testimonial-card {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            margin-bottom: 2rem;
+        .testimonial {
+            flex: 0 0 100%;
+            padding: 24px;
+            text-align: center;
         }
         
-        .testimonial-text {
+        .testimonial-content {
+            font-size: 1.1rem;
             font-style: italic;
-            color: var(--gray-800);
-            margin-bottom: 1rem;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        
+        .testimonial-content::before {
+            content: '\201C';
+            font-size: 4rem;
+            position: absolute;
+            top: -2rem;
+            left: -1rem;
+            color: rgba(0, 112, 209, 0.1);
         }
         
         .testimonial-author {
+            font-weight: 600;
+        }
+        
+        .testimonial-role {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+        
+        .testimonial-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 24px;
+        }
+        
+        .testimonial-nav-item {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--border);
+            margin: 0 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .testimonial-nav-item.active {
+            background-color: var(--primary);
+            transform: scale(1.2);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #1e293b;
+            color: white;
+            padding: 64px 0 24px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+        
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
         }
         
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: var(--gray-200);
-            margin-right: 1rem;
+        .footer-logo i {
+            margin-right: 8px;
         }
         
-        .author-name {
-            font-weight: bold;
-            color: var(--dark);
+        .footer-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 24px;
         }
         
-        .author-title {
-            color: var(--gray-800);
-            font-size: 0.9rem;
-        }
-        
-        .newsletter-section {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
-            color: white;
-            padding: 4rem 2rem;
-            text-align: center;
-        }
-        
-        .newsletter-container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .newsletter-container h2 {
-            margin-bottom: 1rem;
-            font-size: 2rem;
-        }
-        
-        .newsletter-container p {
-            margin-bottom: 2rem;
-        }
-        
-        .newsletter-form {
+        .footer-social {
             display: flex;
-            max-width: 500px;
-            margin: 0 auto;
+            gap: 16px;
         }
         
-        .newsletter-input {
-            flex-grow: 1;
-            padding: 0.75rem 1rem;
-            border: none;
-            border-radius: 4px 0 0 4px;
-            font-size: 1rem;
-        }
-        
-        .newsletter-button {
-            background-color: var(--secondary);
+        .footer-social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
             color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0 4px 4px 0;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
         }
         
-        .newsletter-button:hover {
-            background-color: #0DA271;
+        .footer-social-link:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
         }
         
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 3rem 2rem;
-        }
-        
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-        }
-        
-        .footer-column h3 {
+        .footer-heading {
             font-size: 1.25rem;
-            margin-bottom: 1.5rem;
-            color: var(--light);
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: white;
         }
         
         .footer-links {
             list-style: none;
         }
         
-        .footer-links li {
-            margin-bottom: 0.75rem;
+        .footer-link {
+            margin-bottom: 12px;
         }
         
-        .footer-links a {
-            color: var(--gray-200);
-            text-decoration: none;
-            transition: color 0.3s;
+        .footer-link a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s;
         }
         
-        .footer-links a:hover {
+        .footer-link a:hover {
             color: white;
+            padding-left: 5px;
         }
         
-        .copyright {
-            text-align: center;
-            margin-top: 3rem;
-            color: var(--gray-200);
-            font-size: 0.9rem;
+        .footer-newsletter-text {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 16px;
         }
         
-        .social-links {
+        .footer-newsletter-form {
             display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
+            margin-bottom: 16px;
         }
         
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .footer-newsletter-input {
+            flex-grow: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: var(--radius) 0 0 var(--radius);
+            outline: none;
+        }
+        
+        .footer-newsletter-button {
+            padding: 0 16px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            cursor: pointer;
             transition: background-color 0.3s;
         }
         
-        .social-icon:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+        .footer-newsletter-button:hover {
+            background-color: var(--primary-dark);
         }
         
-        .disclaimer {
-            margin-top: 1rem;
-            font-size: 0.8rem;
-            opacity: 0.7;
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 24px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.875rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-text {
+                margin-bottom: 48px;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .hero-image {
+                width: 100%;
+                max-width: 400px;
+                margin-top: 32px;
+            }
         }
         
         @media (max-width: 768px) {
-            .newsletter-form {
+            .section {
+                padding: 64px 0;
+            }
+            
+            .section-title {
+                font-size: 1.75rem;
+            }
+            
+            .hero {
+                padding: 80px 0;
+            }
+            
+            .hero-title {
+                font-size: 2.25rem;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
                 flex-direction: column;
+                background-color: var(--background);
+                width: 100%;
+                height: calc(100vh - 80px);
+                transition: 0.3s;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             }
             
-            .newsletter-input {
-                border-radius: 4px;
-                margin-bottom: 1rem;
+            .nav-menu.active {
+                left: 0;
             }
             
-            .newsletter-button {
-                border-radius: 4px;
+            .nav-item {
+                margin: 16px 0;
+                text-align: center;
             }
             
-            nav {
-                display: none;
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .cta-title {
+                font-size: 2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .hero-title {
+                font-size: 1.75rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .tool-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .updates-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <div class="logo">
-            <div class="logo-icon">📊</div>
-            <span>Financial Compass SA</span>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-calculator"></i>
+                FinCalc<span style="color: var(--primary);">SA</span>
+            </a>
+            
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="#tools" class="nav-link">Financial Tools</a></li>
+                    <li class="nav-item"><a href="#about" class="nav-link">About Us</a></li>
+                    <li class="nav-item"><a href="#updates" class="nav-link">Updates</a></li>
+                    <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
         </div>
-        <nav>
-            <ul>
-                <li><a href="#tax-calculators">Tax Calculators</a></li>
-                <li><a href="#budget-planner">Budget Planner</a></li>
-                <li><a href="#loan-calculators">Loan Calculators</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
     </header>
     
+    <!-- Hero Section -->
     <section class="hero">
-        <h1>Navigate Your Financial Journey with Confidence</h1>
-        <p>Accurate calculators, intuitive planning tools, and actionable insights tailored for South Africans</p>
-        <a href="#get-started" class="cta-button">Get Started</a>
-    </section>
-    
-    <section id="tools-section" class="tools-section">
-        <div class="section-heading">
-            <h2>Financial Tools That Empower You</h2>
-            <p>Our suite of calculators and planners designed specifically for South African taxpayers and financial planning</p>
-        </div>
-        
-        <div class="tools-grid">
-            <div class="tool-card">
-                <div class="tool-card-header">
-                    <div class="tool-icon">🧮</div>
-                    <h3>SARS Income Tax Calculator</h3>
-                </div>
-                <div class="tool-card-body">
-                    <p>Accurately calculate your income tax based on the latest SARS tax tables and regulations, including deductions, rebates, and medical aid credits.</p>
-                    <a href="#tax-calculator" class="tool-button">Calculate Now</a>
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">South African Financial Tools Simplified</h1>
+                <p class="hero-subtitle">Free online calculators for income tax, loans, budgeting, and more. Specifically designed for South African residents.</p>
+                <div class="hero-buttons">
+                    <a href="#tools" class="btn">Explore Tools</a>
+                    <a href="#about" class="btn btn-outline">Learn More</a>
                 </div>
             </div>
-            
-            <div class="tool-card">
-                <div class="tool-card-header">
-                    <div class="tool-icon">📝</div>
-                    <h3>Comprehensive Budget Planner</h3>
-                </div>
-                <div class="tool-card-body">
-                    <p>Create and manage your personal or household budget with ease. Track income, expenses, and savings goals with visual reports and insights.</p>
-                    <a href="#budget-planner" class="tool-button">Plan Budget</a>
-                </div>
-            </div>
-            
-            <div class="tool-card">
-                <div class="tool-card-header">
-                    <div class="tool-icon">🏠</div>
-                    <h3>Home Loan Calculator</h3>
-                </div>
-                <div class="tool-card-body">
-                    <p>Calculate monthly repayments, total interest, and amortization schedule for your home loan. Explore different scenarios with varying interest rates.</p>
-                    <a href="#home-loan" class="tool-button">Calculate Mortgage</a>
-                </div>
-            </div>
-            
-            <div class="tool-card">
-                <div class="tool-card-header">
-                    <div class="tool-icon">🚗</div>
-                    <h3>Vehicle Finance Calculator</h3>
-                </div>
-                <div class="tool-card-body">
-                    <p>Plan your vehicle purchase with our detailed calculator that includes deposit, balloon payment, term, and interest rate variables.</p>
-                    <a href="#vehicle-finance" class="tool-button">Calculate Vehicle Loan</a>
-                </div>
-            </div>
-            
-            <div class="tool-card">
-                <div class="tool-card-header">
-                    <div class="tool-icon">💼</div>
-                    <h3>Personal Loan Calculator</h3>
-                </div>
-                <div class="tool-card-body">
-                    <p>Understand the true cost of personal loans with our calculator that shows repayments, total interest, and fees based on South African lending practices.</p>
-                    <a href="#personal-loan" class="tool-button">Calculate Personal Loan</a>
-                </div>
-            </div>
-            
-            <div class="tool-card">
-                <div class="tool-card-header">
-                    <div class="tool-icon">📈</div>
-                    <h3>Retirement Calculator</h3>
-                </div>
-                <div class="tool-card-body">
-                    <p>Plan for your future with our retirement calculator that factors in inflation, investment returns, and tax implications specific to South Africa.</p>
-                    <a href="#retirement" class="tool-button">Plan Retirement</a>
-                </div>
-            </div>
+            <img src="/api/placeholder/600/400" alt="Financial dashboard illustration" class="hero-image">
         </div>
     </section>
     
-    <section class="features-section">
-        <div class="section-heading">
-            <h2>Why Choose Our Financial Tools</h2>
-            <p>Features designed to provide clarity, accuracy, and actionable insights</p>
-        </div>
-        
-        <div class="features-grid">
-            <div class="feature-item">
-                <div class="feature-icon">📊</div>
-                <h3>Visual Data Insights</h3>
-                <p>Interactive charts and graphs that transform complex financial data into clear visual representations for better understanding.</p>
-            </div>
+    <!-- Featured Tools Section -->
+    <section class="section" id="tools">
+        <div class="container">
+            <h2 class="section-title">Essential Financial Tools</h2>
+            <p class="section-subtitle">Accurate calculators built specifically for South African financial regulations and tax laws.</p>
             
-            <div class="feature-item">
-                <div class="feature-icon">🔍</div>
-                <h3>South African Tax Expertise</h3>
-                <p>Calculators and tools updated with the latest SARS regulations, tax brackets, and financial policies specific to South Africa.</p>
-            </div>
-            
-            <div class="feature-item">
-                <div class="feature-icon">🚀</div>
-                <h3>Scenario Planning</h3>
-                <p>Compare different financial scenarios side-by-side to make informed decisions about loans, investments, and budgeting.</p>
-            </div>
-            
-            <div class="feature-item">
-                <div class="feature-icon">🔒</div>
-                <h3>Privacy Focused</h3>
-                <p>Your financial data never leaves your device. All calculations are performed locally for maximum security and privacy.</p>
-            </div>
-            
-            <div class="feature-item">
-                <div class="feature-icon">💡</div>
-                <h3>Personalized Insights</h3>
-                <p>Receive tailored recommendations and insights based on your financial inputs and goals.</p>
-            </div>
-            
-            <div class="feature-item">
-                <div class="feature-icon">📱</div>
-                <h3>Mobile Friendly</h3>
-                <p>Access all tools seamlessly across devices, with responsive design optimized for desktop, tablet, and mobile.</p>
-            </div>
-        </div>
-    </section>
-    
-    <section class="testimonials-section">
-        <div class="section-heading">
-            <h2>What Users Are Saying</h2>
-            <p>Real experiences from South Africans using our financial tools</p>
-        </div>
-        
-        <div class="testimonials-container">
-            <div class="testimonial-card">
-                <p class="testimonial-text">"The tax calculator saved me hours of confusion and stress. I finally understand exactly how my tax is calculated and where I could optimize my deductions."</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar"></div>
-                    <div>
-                        <div class="author-name">Thabo M.</div>
-                        <div class="author-title">Cape Town, Small Business Owner</div>
+            <div class="tool-grid">
+                <!-- Tool 1 -->
+                <div class="tool-card">
+                    <div class="tool-card-header">
+                        <div class="tool-card-icon">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                        <h3 class="tool-card-title">SARS Income Tax Calculator</h3>
+                    </div>
+                    <div class="tool-card-body">
+                        <p class="tool-card-description">Calculate your personal income tax based on the latest South African tax brackets. Includes rebates, deductions, and tax credits.</p>
+                    </div>
+                    <div class="tool-card-footer">
+                        <a href="tax-calculator.html" class="btn btn-secondary">Calculate Now</a>
                     </div>
                 </div>
-            </div>
-            
-            <div class="testimonial-card">
-                <p class="testimonial-text">"The budget planner completely changed how I manage my finances. The visual reports make it so easy to see where my money is going and where I can save more."</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar"></div>
-                    <div>
-                        <div class="author-name">Sarah J.</div>
-                        <div class="author-title">Johannesburg, Marketing Professional</div>
+                
+                <!-- Tool 2 -->
+                <div class="tool-card">
+                    <div class="tool-card-header" style="background-color: var(--secondary);">
+                        <div class="tool-card-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <h3 class="tool-card-title">Budget Planner</h3>
+                    </div>
+                    <div class="tool-card-body">
+                        <p class="tool-card-description">Create and manage your personal budget with interactive charts showing income, expenses, and savings opportunities.</p>
+                    </div>
+                    <div class="tool-card-footer">
+                        <a href="budget-planner.html" class="btn btn-secondary">Plan Budget</a>
                     </div>
                 </div>
-            </div>
-            
-            <div class="testimonial-card">
-                <p class="testimonial-text">"I was about to accept a car loan offer until I used the vehicle finance calculator. I saved over R30,000 by understanding the true cost and negotiating better terms."</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar"></div>
-                    <div>
-                        <div class="author-name">Mandla K.</div>
-                        <div class="author-title">Durban, Engineer</div>
+                
+                <!-- Tool 3 -->
+                <div class="tool-card">
+                    <div class="tool-card-header" style="background-color: #6C63FF;">
+                        <div class="tool-card-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h3 class="tool-card-title">Loan Calculators</h3>
+                    </div>
+                    <div class="tool-card-body">
+                        <p class="tool-card-description">Calculate repayments for home loans, car finance, and personal loans with South African interest rates and terms.</p>
+                    </div>
+                    <div class="tool-card-footer">
+                        <a href="loan-calculators.html" class="btn btn-secondary">Calculate Loans</a>
+                    </div>
+                </div>
+                
+                <!-- Tool 4 -->
+                <div class="tool-card">
+                    <div class="tool-card-header" style="background-color: #FF6B6B;">
+                        <div class="tool-card-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <h3 class="tool-card-title">VAT Calculator</h3>
+                    </div>
+                    <div class="tool-card-body">
+                        <p class="tool-card-description">Add or subtract VAT from any amount based on current South African Value Added Tax rates.</p>
+                    </div>
+                    <div class="tool-card-footer">
+                        <a href="vat-calculator.html" class="btn btn-secondary">Calculate VAT</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     
-    <section class="newsletter-section">
-        <div class="newsletter-container">
-            <h2>Stay Updated with Financial Tips</h2>
-            <p>Subscribe to our newsletter for the latest tax updates, financial planning strategies, and tool enhancements</p>
-            <form class="newsletter-form">
-                <input type="email" class="newsletter-input" placeholder="Your email address">
-                <button type="submit" class="newsletter-button">Subscribe</button>
-            </form>
+    <!-- Why Choose Us Section -->
+    <section class="section features-section" id="about">
+        <div class="container">
+            <h2 class="section-title">Why Choose Our Tools</h2>
+            <p class="section-subtitle">Experience the benefits of financial tools specifically designed for South Africans.</p>
+            
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3 class="feature-title">South African Specific</h3>
+                    <p class="feature-description">All calculations based on current South African tax laws, regulations, and financial practices.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Visual Insights</h3>
+                    <p class="feature-description">Interactive charts and graphs that make complex financial data easy to understand at a glance.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3 class="feature-title">Private & Secure</h3>
+                    <p class="feature-description">All calculations happen in your browser. No financial data is stored or transmitted to our servers.</p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Always Updated</h3>
+                    <p class="feature-description">Our tools are regularly updated to reflect the latest tax brackets, interest rates, and financial regulations.</p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Mobile Friendly</h3>
+                    <p class="feature-description">Use our tools on any device - desktop, tablet, or smartphone with the same great experience.</p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h3 class="feature-title">Completely Free</h3>
+                    <p class="feature-description">All our calculators and tools are free to use, with no hidden fees or subscriptions required.</p>
+                </div>
+            </div>
         </div>
     </section>
     
-    <footer>
-        <div class="footer-container">
-            <div class="footer-column">
-                <h3>Financial Compass SA</h3>
-                <p>Your trusted partner for financial clarity and planning in South Africa.</p>
-                <div class="social-links">
-                    <a href="#" class="social-icon">f</a>
-                    <a href="#" class="social-icon">in</a>
-                    <a href="#" class="social-icon">tw</a>
+    <!-- Latest Updates Section -->
+    <section class="section" id="updates">
+        <div class="container">
+            <h2 class="section-title">Latest Financial Updates</h2>
+            <p class="section-subtitle">Stay informed about the latest changes in South African tax laws and financial regulations.</p>
+            
+            <div class="updates-grid">
+                <!-- Update 1 -->
+                <div class="card update-card">
+                    <div class="update-card-content">
+                        <p class="update-date">April 17, 2025</p>
+                        <h3 class="update-title">2025/2026 Tax Year Changes</h3>
+                        <p class="update-excerpt">SARS has announced the new tax brackets and rebates for the 2025/2026 tax year. Our calculators have been updated with these changes.</p>
+                        <a href="#" class="btn btn-outline">Read More</a>
+                    </div>
+                </div>
+                
+                <!-- Update 2 -->
+                <div class="card update-card">
+                    <div class="update-card-content">
+                        <p class="update-date">April 10, 2025</p>
+                        <h3 class="update-title">New Retirement Fund Regulations</h3>
+                        <p class="update-excerpt">The National Treasury has implemented new regulations for retirement annuities and pension funds. Learn how this affects your retirement planning.</p>
+                        <a href="#" class="btn btn-outline">Read More</a>
+                    </div>
+                </div>
+                
+                <!-- Update 3 -->
+                <div class="card update-card">
+                    <div class="update-card-content">
+                        <p class="update-date">March 29, 2025</p>
+                        <h3 class="update-title">Interest Rate Changes Impact</h3>
+                        <p class="update-excerpt">The South African Reserve Bank has adjusted the repo rate. Find out how this affects your loans, investments, and savings.</p>
+                        <a href="#" class="btn btn-outline">Read More</a>
+                    </div>
                 </div>
             </div>
-            
-            <div class="footer-column">
-                <h3>Tools</h3>
-                <ul class="footer-links">
-                    <li><a href="#tax-calculator">SARS Tax Calculator</a></li>
-                    <li><a href="#budget-planner">Budget Planner</a></li>
-                    <li><a href="#home-loan">Home Loan Calculator</a></li>
-                    <li><a href="#vehicle-finance">Vehicle Finance</a></li>
-                    <li><a href="#personal-loan">Personal Loan</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Resources</h3>
-                <ul class="footer-links">
-                    <li><a href="#tax-guides">Tax Guides</a></li>
-                    <li><a href="#financial-planning">Financial Planning</a></li>
-                    <li><a href="#investment-basics">Investment Basics</a></li>
-                    <li><a href="#debt-management">Debt Management</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Company</h3>
-                <ul class="footer-links">
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li><a href="#privacy">Privacy Policy</a></li>
-                    <li><a href="#terms">Terms of Service</a></li>
-                </ul>
-            </div>
         </div>
-        
-        <div class="copyright">
-            <p>&copy; 2025 Financial Compass SA. All rights reserved.</p>
-            <p class="disclaimer">The calculators and information provided are for educational purposes only and do not constitute financial advice. Always consult with a qualified financial professional.</p>
-        </div>
-    </footer>
-</body>
-</html>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="section" style="background-color: var(--background-alt);">
+        <div class="container">
+            <h2 class="section-title">What Our Users Say</h2>
+            <p class="section-subtitle">Thousands of South Africans rely
